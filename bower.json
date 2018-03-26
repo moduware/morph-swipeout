@@ -1,0 +1,17 @@
+{
+  "name": "morph-swipeout",
+  "description": "Component to allow swipeout of content by use that will reveal additional actions that don&#39;t take screen space normally",
+  "main": "morph-swipeout.html",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "morph-element": "https://github.com/moduware/morph-element.git#master"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}
