@@ -10,10 +10,19 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
+    <link rel="import" href="../../morph-button/morph-button.html">
+    <link rel="import" href="../../morph-list-view/morph-list-view.html">
+    <link rel="import" href="../../morph-list-view-item/morph-list-view-item.html">
     <link rel="import" href="../morph-swipeout.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
+        demo-snippet {
+          --demo-snippet-demo: {
+            background-color: #eff0f4;
+          }
+        }
       </style>
     </custom-style>
   </head>
@@ -22,7 +31,34 @@
       <h3>Basic morph-swipeout demo</h3>
       <demo-snippet>
         <template>
-          <morph-swipeout></morph-swipeout>
+          <!-- standalone swipeout (lonely ranger) -->
+          <morph-swipeout>
+            <span slot="left-buttons">
+              <morph-button color="green" filled>Action</morph-button>
+            </span>
+            Swipeout content
+            <span slot="right-buttons">
+              <morph-button color="red" filled>Delete</morph-button>
+            </span>
+          </morph-swipeout>
+
+          <!-- <morph-list-view>
+            <morph-list-view-item swipeout>
+              <span slot="swipeout-left-buttons">
+                <morph-button color="green">Action</morph-button>
+              </span>
+              Item 1
+              <span slot="swipeout-right-buttons">
+                <morph-button color="red">Delete</morph-button>
+              </span>
+            </morph-list-view-item>
+            <morph-list-view-item>Item 2</morph-list-view-item>
+            <morph-list-view-item>Item 3</morph-list-view-item>
+          </morph-list-view> -->
+
+          <!-- <morph-swipeout>
+
+          </morph-swipeout> -->
         </template>
       </demo-snippet>
     </div>
