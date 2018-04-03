@@ -44,14 +44,14 @@
     </style>
 
     <div class="root-container" id="rootContainer" on-track="handleTrack">
-      <div class="left-buttons-container">
+      <div class="left-buttons-container" id="leftButtonsContainer">
         <slot name="left-buttons"></slot>
       </div>
   
       <!-- main content of swipeout goes here -->
       <slot></slot>
   
-      <div class="right-buttons-container">
+      <div class="right-buttons-container" id="rightButtonsContainer">
         <slot name="right-buttons"></slot>
       </div>
     </div>
@@ -81,13 +81,14 @@
         console.log(event);
         if(event.detail.state == 'start') {
           rootContainer.classList.add('no-transition');
+          this._rightButtonsContainerSize = this.$.rightButtonsContainer.offsetWidth;
         } else if(event.detail.state == 'end') {
           rootContainer.classList.remove('no-transition');
           const normalizedDistance = distance * -1;
-          if(normalizedDistance < 35) {
+          if(normalizedDistance < this._rightButtonsContainerSize / 2) {
             distance = 0;
           } else {
-            distance = -70.48;
+            distance = this._rightButtonsContainerSize * -1;
           }
         }
         
