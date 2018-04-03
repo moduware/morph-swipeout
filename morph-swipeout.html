@@ -75,23 +75,47 @@
       }
 
       handleTrack(event) {
+        // determining our current state
         const rootContainer = this.$.rootContainer;
         let distance = event.detail.dx;
+        const direction = event.detail.dx > 0 ? 'right' : 'left';
 
-        console.log(event);
+        // console.log(event);
         if(event.detail.state == 'start') {
+          // we don't want smooth transitions during user interaction, so removing css smoother
           rootContainer.classList.add('no-transition');
+          // determining our buttons container sizes
           this._rightButtonsContainerSize = this.$.rightButtonsContainer.offsetWidth;
+          this._leftButtonsContainerSize = this.$.leftButtonsContainer.offsetWidth;
         } else if(event.detail.state == 'end') {
+          // after user finished interaction, enabling css smoother back
           rootContainer.classList.remove('no-transition');
-          const normalizedDistance = distance * -1;
-          if(normalizedDistance < this._rightButtonsContainerSize / 2) {
-            distance = 0;
+
+          // calculating normilized distance (singless)
+          let normalizedDistance = distance;
+          if(direction == 'left') normalizedDistance *= -1;
+
+          // determining our final position by last distance
+          // if too small, just cancel
+          // if further then half length of button container then reveal buttons
+          if(direction == 'left') {
+            // when swipe in left direction, reveal right buttons
+            if(normalizedDistance < this._rightButtonsContainerSize / 2) {
+              distance = 0;
+            } else {
+              distance = this._rightButtonsContainerSize * -1;
+            }
           } else {
-            distance = this._rightButtonsContainerSize * -1;
+            // when swipe in right direction, reveal left buttons
+            if(normalizedDistance < this._leftButtonsContainerSize / 2) {
+              distance = 0;
+            } else {
+              distance = this._leftButtonsContainerSize;
+            }
           }
         }
         
+        // On every bit of interaction we are applying it to our element
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
     }
