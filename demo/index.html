@@ -21,7 +21,13 @@
         demo-snippet {
           --demo-snippet-demo: {
             background-color: #eff0f4;
+            padding-left: 0;
+            padding-right: 0;
           }
+        }
+
+        morph-button {
+          border-radius: 0;
         }
       </style>
     </custom-style>
@@ -34,11 +40,11 @@
           <!-- standalone swipeout (lonely ranger) -->
           <morph-swipeout>
             <span slot="left-buttons">
-              <morph-button color="green" filled>Action</morph-button>
+              <morph-button color="green" filled big>Action</morph-button>
             </span>
-            Swipeout content
+            Swipeout content 
             <span slot="right-buttons">
-              <morph-button color="red" filled>Delete</morph-button>
+              <morph-button color="red" filled big>Delete</morph-button>
             </span>
           </morph-swipeout>
 

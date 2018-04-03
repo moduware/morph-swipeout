@@ -1,20 +1,60 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../morph-element/morph-element.html">
+<link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 
 <dom-module id="morph-swipeout">
   <template>
     <style>
       :host {
+        position: relative;
         display: block;
+        overflow-x: hidden;
       }
+
+      .root-container:not(.no-transition) {
+        transition: transform 300ms;
+        /* transform: translateX(-40px); */
+      }
+
+
+      :host([platform="ios"]) .root-container {
+        min-height: 44px;
+      }
+
+      :host([platform="android"]) .root-container {
+        min-height: 48px;
+      }
+
+      .left-buttons-container,
+      .right-buttons-container {
+        position: absolute;
+        top: 50%;
+      }
+
+      .left-buttons-container {
+        left: 0;
+        transform: translateY(-50%) translateX(-100%);
+      }
+
+      .right-buttons-container {
+        right: 0;
+        transform: translateY(-50%) translateX(100%);
+      }
+
     </style>
 
-    <slot name="left-buttons"></slot>
-
-    <!-- main content of swipeout goes here -->
-    <slot></slot>
-
-    <slot name="right-buttons"></slot>
+    <div class="root-container" id="rootContainer" on-track="handleTrack">
+      <div class="left-buttons-container">
+        <slot name="left-buttons"></slot>
+      </div>
+  
+      <!-- main content of swipeout goes here -->
+      <slot></slot>
+  
+      <div class="right-buttons-container">
+        <slot name="right-buttons"></slot>
+      </div>
+    </div>
 
   </template>
 
@@ -27,11 +67,31 @@
      * @polymer
      * @demo demo/index.html
      */
-    class MorphSwipeout extends MorphElement(Polymer.Element) {
+    class MorphSwipeout extends MorphElement(Polymer.GestureEventListeners(Polymer.Element)) {
       static get is() { return 'morph-swipeout'; }
       static get properties() {
         return {
         };
+      }
+
+      handleTrack(event) {
+        const rootContainer = this.$.rootContainer;
+        let distance = event.detail.dx;
+
+        console.log(event);
+        if(event.detail.state == 'start') {
+          rootContainer.classList.add('no-transition');
+        } else if(event.detail.state == 'end') {
+          rootContainer.classList.remove('no-transition');
+          const normalizedDistance = distance * -1;
+          if(normalizedDistance < 35) {
+            distance = 0;
+          } else {
+            distance = -70.48;
+          }
+        }
+        
+        rootContainer.style.transform = `translateX(${distance}px)`;
       }
     }
 
