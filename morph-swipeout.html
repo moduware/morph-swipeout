@@ -9,6 +9,7 @@
         position: relative;
         display: block;
         overflow-x: hidden;
+        background-color: var(--back-container-background-color, #fff);
       }
 
       .root-container:not(.no-transition) {
@@ -61,7 +62,7 @@
   <script>
     /**
      * `morph-swipeout`
-     * Component to allow swipeout of content by use that will reveal additional actions that don&#39;t take screen space normally
+     * Component to allow swipeout of content by use that will reveal additional actions that don't take screen space normally
      *
      * @customElement
      * @polymer
@@ -78,6 +79,7 @@
         // determining our current state
         const rootContainer = this.$.rootContainer;
         let distance = event.detail.dx;
+        let normalizedDistance;
         const direction = event.detail.dx > 0 ? 'right' : 'left';
 
         // console.log(event);
@@ -91,34 +93,63 @@
           // after user finished interaction, enabling css smoother back
           rootContainer.classList.remove('no-transition');
 
-          // calculating normilized distance (singless)
-          let normalizedDistance = distance;
-          if(direction == 'left') normalizedDistance *= -1;
+          // calculating normilized distance (signless)
+          normalizedDistance = this._computeNormalizeDistance(direction, distance);
 
           // determining our final position by last distance
           // if too small, just cancel
-          // if further then half length of button container then reveal buttons
+          // if further than half length of button container then reveal buttons
           if(direction == 'left') {
             // when swipe in left direction, reveal right buttons
-            if(normalizedDistance < this._rightButtonsContainerSize / 2) {
-              distance = 0;
-            } else {
-              distance = this._rightButtonsContainerSize * -1;
-            }
+            distance = this._computeDistanceToRevealRightButtons(normalizedDistance);
           } else {
             // when swipe in right direction, reveal left buttons
-            if(normalizedDistance < this._leftButtonsContainerSize / 2) {
-              distance = 0;
-            } else {
-              distance = this._leftButtonsContainerSize;
-            }
+            distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
           }
         }
         
         // On every bit of interaction we are applying it to our element
+        if(normalizedDistance > 312) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
+      
+      /**
+      * Computes for the signless value or positive value of the number
+      * @param {String} - direction The direction of the travel of swipe left or right
+      * @param {Number} - distance The value of the travel of event left or right scroll
+      */
+      _computeNormalizeDistance(direction, distance) {
+        if (direction == 'left') return distance *= -1;
+      }
+
+      /**
+      * Computes for the distance for reveal of right buttons
+      * @param {Number} - normalizedDistance The value of the travel of event left or right scroll
+      */
+      _computeDistanceToRevealRightButtons(normalizedDistance) {
+        // when swipe in left direction, reveal right buttons
+        if (normalizedDistance < this._rightButtonsContainerSize / 2) {
+          return 0;
+        } else {
+          return this._rightButtonsContainerSize * -1;
+        }
+      }
+
+      /**
+      * Computes for the distance for reveal of left buttons
+      * @param {Number} - normalizedDistance The value of the travel of event left or right scroll
+      */
+      _computeDistanceToRevealLeftButtons(normalizedDistance) {
+        // when swipe in left direction, reveal right buttons
+        if (normalizedDistance < this._leftButtonsContainerSize / 2) {
+          return 0;
+        } else {
+          return this._leftButtonsContainerSize;
+        }
+      }
+
     }
+
 
     window.customElements.define(MorphSwipeout.is, MorphSwipeout);
   </script>
