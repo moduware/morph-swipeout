@@ -6,10 +6,22 @@
   <template>
     <style>
       :host {
+        --ios-root-container-min-height: 44px;
+        --android-root-container-min-height: 48px;
+        --swipe-action-after-background-color: yellow;
+
         position: relative;
         display: block;
         overflow-x: hidden;
         background-color: var(--back-container-background-color, #fff);
+      }
+
+      :host([platform="ios"]) {
+        --swipe-action-after-height: var(--ios-root-container-min-height);
+      }
+
+      :host([platform="android"]) {
+        --swipe-action-after-height: var(--android-root-container-min-height);
       }
 
       .root-container:not(.no-transition) {
@@ -19,11 +31,11 @@
 
 
       :host([platform="ios"]) .root-container {
-        min-height: 44px;
+        min-height: var(--ios-root-container-min-height);
       }
 
       :host([platform="android"]) .root-container {
-        min-height: 48px;
+        min-height: var(--android-root-container-min-height);
       }
 
       .left-buttons-container,
@@ -40,6 +52,27 @@
       .right-buttons-container {
         right: 0;
         transform: translateY(-50%) translateX(100%);
+      }
+
+      :host .right-buttons-container ::slotted([slot="right-buttons"])  morph-button {
+        position: relative;
+      }
+
+      /* .left-buttons-wrapper::after, */
+      :host .right-buttons-container ::slotted([slot="right-buttons"])::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 600%;
+        height: var(--swipe-action-after-height);
+        background: var(--swipe-action-after-background-color, #fff);
+        z-index: -1;
+        transform: translate3d(0,0,0);
+      }
+
+      :host .right-buttons-container ::slotted([slot="right-buttons"])::after {
+        left: 100%;
+        margin-left: -1px;
       }
 
     </style>
@@ -73,6 +106,12 @@
       static get properties() {
         return {
         };
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+        // get the background-color of morph-button and assign to its ::after swipe-action extendsion
+        this._getLastRightMorphButtonBackgroundColor();
       }
 
       handleTrack(event) {
@@ -109,7 +148,7 @@
         }
         
         // On every bit of interaction we are applying it to our element
-        if(normalizedDistance > 312) return;
+        if(Math.abs(distance) > 312) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
       
@@ -148,8 +187,34 @@
         }
       }
 
-    }
+      _getLastRightMorphButtonBackgroundColor() {
+        let elementShadowRoot = this.shadowRoot, observer1, items, lastRightButton;
+        observer1 = new Polymer.FlattenedNodesObserver(this, function (info) {
+          items = info;
+        });
+        observer1.flush();
 
+        let nodes = items.addedNodes;
+
+        // get the morph-button with the correct id - lastRightButton
+        for (var i = 0; i < nodes.length; i++) {
+          if (nodes[i].nodeName != "#text") {
+            var swipeoutChild = nodes[i];
+            
+            // check which item matches header slot name 'header'
+            if (swipeoutChild.getAttribute('slot') == 'right-buttons') {
+              lastRightButton = swipeoutChild.querySelector('morph-button#lastRightButton');
+            }
+          }
+        }
+
+        let morphButtonRight = lastRightButton;
+        let rightMorphButtonBackgroundColor = window.getComputedStyle(morphButtonRight).getPropertyValue('background-color');
+        
+        this.style.setProperty('--swipe-action-after-background-color', rightMorphButtonBackgroundColor);
+      }
+
+    }
 
     window.customElements.define(MorphSwipeout.is, MorphSwipeout);
   </script>
