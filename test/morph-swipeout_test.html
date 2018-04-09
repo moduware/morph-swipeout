@@ -10,39 +10,35 @@
     <script src="../../web-component-tester/browser.js"></script>
 
     <link rel="import" href="../morph-swipeout.html">
+    <link rel="import" href="../../morph-button/morph-button.html">
+    <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
   </head>
   <body>
 
     <test-fixture id="BasicTestFixture">
       <template>
-        <morph-swipeout></morph-swipeout>
-      </template>
-    </test-fixture>
-
-    <test-fixture id="ChangedPropertyTestFixture">
-      <template>
-        <morph-swipeout prop1="new-prop1"></morph-swipeout>
+        <morph-swipeout platform="ios">
+          <span slot="left-buttons">
+            <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button id="rightLastButton" color="red" filled big flat>Delete</morph-button>
+          </span>
+        </morph-swipeout>
       </template>
     </test-fixture>
 
     <script>
-      suite('morph-swipeout', () => {
+      describe('morph-swipeout', () => {
+        let element;
 
-        test('instantiating the element with default properties works', () => {
-          const element = fixture('BasicTestFixture');
-          assert.equal(element.prop1, 'morph-swipeout');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello morph-swipeout!');
+        beforeEach( function() {
+          element = fixture('BasicTestFixture');
         });
 
-        test('setting a property on the element works', () => {
-          // Create a test fixture
-          const element = fixture('ChangedPropertyTestFixture');
-          assert.equal(element.prop1, 'new-prop1');
-          const elementShadowRoot = element.shadowRoot;
-          const elementHeader = elementShadowRoot.querySelector('h2');
-          assert.equal(elementHeader.innerHTML, 'Hello new-prop1!');
+        it('instantiating the element', () => {
+          expect(element).to.be.ok;
         });
 
       });

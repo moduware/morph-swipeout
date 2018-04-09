@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../morph-element/morph-element.html">
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
 
 <dom-module id="morph-swipeout">
   <template>
@@ -119,9 +120,18 @@
 
       connectedCallback() {
         super.connectedCallback();
+        this._observer = new Polymer.FlattenedNodesObserver(this, (info) => {
+          this.info = info;
+        });
+        this._observer.flush();
         // get the background-color of morph-button and assign to its ::after swipe-action extendsion
         this._getLastRightMorphButtonBackgroundColor();
         this._getLastLeftMorphButtonBackgroundColor();
+      }
+
+      disconnectedCallback() {
+        super.disconnectedCallback();
+        this._observer.disconnect();
       }
 
       /**
@@ -216,13 +226,14 @@
       }
 
       _getMorphButtonElement(buttonPosition) {
-        let elementShadowRoot = this.shadowRoot, observer1, items, lastButton;
-        observer1 = new Polymer.FlattenedNodesObserver(this, function (info) {
-          items = info;
-        });
-        observer1.flush();
+        let items, lastButton;
+        // let elementShadowRoot = this.shadowRoot, observer1, items, lastButton;
+        // observer1 = new Polymer.FlattenedNodesObserver(this, function (info) {
+        //   items = info;
+        // });
+        // this._observer.flush();
 
-        let nodes = items.addedNodes;
+        let nodes = this.info.addedNodes;
 
         for (var i = 0; i < nodes.length; i++) {
           if (nodes[i].nodeName != "#text") {
