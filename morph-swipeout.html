@@ -242,7 +242,12 @@
             // get the button container with the correct id
             if (swipeoutChild.getAttribute('slot') == (buttonPosition + '-buttons') ) {
             // check which item matches morph-button id leftLastButton or rightLastButton
-              lastButton = swipeoutChild.querySelector('morph-button#' + buttonPosition + 'LastButton');
+              // lastButton = swipeoutChild.querySelector('morph-button#' + buttonPosition + 'LastButton');
+              if (buttonPosition == 'left') {
+                lastButton = swipeoutChild.children[0]; // querySelector('morph-button#' + buttonPosition + 'LastButton');
+              } else {
+                lastButton = swipeoutChild.children[swipeoutChild.children.length - 1]; // querySelector('morph-button#' + buttonPosition + 'LastButton');
+              }
             }
           }
         }
