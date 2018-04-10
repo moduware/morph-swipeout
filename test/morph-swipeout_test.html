@@ -31,13 +31,19 @@
 
     <script>
       describe('morph-swipeout', () => {
-        let element;
+        let element, items;
 
         beforeEach( function() {
           element = fixture('BasicTestFixture');
+          this.observer1 = new Polymer.FlattenedNodesObserver(element, function (info) {
+          items = info;
+        });
+        this.observer1.flush();
         });
 
         it('instantiating the element', () => {
+          console.log('items', items.addedNodes);
+          
           expect(element).to.be.ok;
         });
 
