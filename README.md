@@ -45,7 +45,8 @@ For the information about how to clone the desired repository, running the local
 - The following custom CSS properties are available for styling `morph-swipeout` component
 
 
-Custom property                         | Description                                                                      | Default    |
-----------------------------------------|----------------------------------------------------------------------------------|------------|
-`--back-container-background-color`     | Background color for back container property                                     | #fff       |
-`--swipe-action-after-background-color` | To help get the morph-button background-color swipe action psuedo element        | #fff       |
+Custom property                               | Description                                                                      | Default    |
+----------------------------------------------|----------------------------------------------------------------------------------|------------|
+`--back-container-background-color`           | Background color for back container property                                     | #fff       |
+`--swipe-action-after-background-color-left`  | To help get the left morph-button background-color swipe action psuedo element   | #fff       |
+`--swipe-action-after-background-color-right` | To help get the right morph-button background-color swipe action psuedo element  | #fff       |
