@@ -34,6 +34,7 @@ For the information about how to clone the desired repository, running the local
   </morph-swipeout>
 
   ```
+
 ### Attributes
 
 |     Custom Attribute    |   Type  | Description                                                                                   | Default        |
