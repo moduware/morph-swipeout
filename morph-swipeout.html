@@ -124,9 +124,9 @@
           this.info = info;
         });
         this._observer.flush();
-        // get the background-color of morph-button and assign to its ::after swipe-action extendsion
-        this._getLastRightMorphButtonBackgroundColor();
-        this._getLastLeftMorphButtonBackgroundColor();
+        // get the background-color of morph-button and assign to its ::after swipe-action extension
+        this.style.setProperty('--swipe-action-after-background-color-right', this._getLastMorphButtonBackgroundColor('right'));
+        this.style.setProperty('--swipe-action-after-background-color-left', this._getLastMorphButtonBackgroundColor('left'));
       }
 
       disconnectedCallback() {
@@ -155,9 +155,9 @@
         } else if(event.detail.state == 'end') {
           // after user finished interaction, enabling css smoother back
           rootContainer.classList.remove('no-transition');
-
-          // calculating normilized distance (signless)
-          normalizedDistance = this._computeNormalizeDistance(direction, distance);
+          
+          // calculating positive distance (signless)
+          normalizedDistance = Math.abs(distance);
 
           // determining our final position by last distance
           // if too small, just cancel
@@ -174,15 +174,6 @@
         // On every bit of interaction we are applying it to our element
         if(Math.abs(distance) > 312) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
-      }
-      
-      /**
-      * Computes for the signless value or positive value of the number
-      * @param {String} - direction The direction of the travel of swipe left or right
-      * @param {Number} - distance The value of the travel of event left or right scroll
-      */
-      _computeNormalizeDistance(direction, distance) {
-        if (direction == 'left') return distance *= -1;
       }
 
       /**
@@ -211,28 +202,14 @@
         }
       }
 
-      _getLastRightMorphButtonBackgroundColor() {
-        let morphButtonRight = this._getMorphButtonElement('right');
-        let rightMorphButtonBackgroundColor = window.getComputedStyle(morphButtonRight).getPropertyValue('background-color');
-        
-        this.style.setProperty('--swipe-action-after-background-color-right', rightMorphButtonBackgroundColor);
-      }
-
-      _getLastLeftMorphButtonBackgroundColor() {
-        let morphButtonLeft = this._getMorphButtonElement('left');
-        let leftMorphButtonBackgroundColor = window.getComputedStyle(morphButtonLeft).getPropertyValue('background-color');
-
-        this.style.setProperty('--swipe-action-after-background-color-left', leftMorphButtonBackgroundColor);
+      _getLastMorphButtonBackgroundColor(buttonPosition) {
+        let morphButton = this._getMorphButtonElement(buttonPosition);
+        let morphButtonBackgroundColor = window.getComputedStyle(morphButton).getPropertyValue('background-color');
+        return morphButtonBackgroundColor;
       }
 
       _getMorphButtonElement(buttonPosition) {
         let items, lastButton;
-        // let elementShadowRoot = this.shadowRoot, observer1, items, lastButton;
-        // observer1 = new Polymer.FlattenedNodesObserver(this, function (info) {
-        //   items = info;
-        // });
-        // this._observer.flush();
-
         let nodes = this.info.addedNodes;
 
         for (var i = 0; i < nodes.length; i++) {
