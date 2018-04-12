@@ -127,11 +127,24 @@
         // get the background-color of morph-button and assign to its ::after swipe-action extension
         this.style.setProperty('--swipe-action-after-background-color-right', this._getLastMorphButtonBackgroundColor('right'));
         this.style.setProperty('--swipe-action-after-background-color-left', this._getLastMorphButtonBackgroundColor('left'));
+
+        let that = this;
+
+        // ADD tap event to whole body
+        window.addEventListener('click', function(e) {
+          let target = e.target;
+          // if the click is outside the button then close the swipeout component
+          if (target != that) {
+            that._closeSwipe();
+          }
+        });
       }
 
       disconnectedCallback() {
         super.disconnectedCallback();
         this._observer.disconnect();
+        // REMOVE event window click listener
+        window.removeEventListener('click', this._tapListener);
       }
 
       /**
@@ -174,6 +187,12 @@
         // On every bit of interaction we are applying it to our element
         if(Math.abs(distance) > 312) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
+      }
+
+      _closeSwipe() {
+        const rootContainer = this.$.rootContainer;
+        
+        rootContainer.style.transform = `translateX(0px)`;
       }
 
       /**
