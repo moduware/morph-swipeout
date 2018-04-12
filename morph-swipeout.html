@@ -9,8 +9,8 @@
       :host {
         --ios-root-container-min-height: 44px;
         --android-root-container-min-height: 48px;
-        --swipe-action-after-background-color-right: white;
-        --swipe-action-after-background-color-left: white;
+        --swipe-action-after-background-color-right: yellow;
+        --swipe-action-after-background-color-left: yellow;
 
         position: relative;
         display: block;
@@ -74,13 +74,13 @@
       }
 
       :host .right-buttons-container ::slotted([slot="right-buttons"])::after {
-        background: var(--swipe-action-after-background-color-right);
+        background-color: var(--swipe-action-after-background-color-right);
         left: 100%;
         margin-left: -1px;
       }
 
       :host .left-buttons-container ::slotted([slot="left-buttons"])::after {
-        background: var(--swipe-action-after-background-color-left, #fff);
+        background-color: var(--swipe-action-after-background-color-left, #fff);
         right: 100%;
         margin-right: -1px;
       }
@@ -203,27 +203,25 @@
       }
 
       _getLastMorphButtonBackgroundColor(buttonPosition) {
-        let morphButton = this._getMorphButtonElement(buttonPosition);
-        let morphButtonBackgroundColor = window.getComputedStyle(morphButton).getPropertyValue('background-color');
-        return morphButtonBackgroundColor;
+        const morphButton = this._getMorphButtonElement(buttonPosition);
+        if(morphButton) return window.getComputedStyle(morphButton).getPropertyValue('background-color');
       }
 
       _getMorphButtonElement(buttonPosition) {
         let items, lastButton;
-        let nodes = this.info.addedNodes;
+        const nodes = this.info.addedNodes;
 
         for (var i = 0; i < nodes.length; i++) {
-          if (nodes[i].nodeName != "#text") {
+          if (nodes[i].nodeName != "#text" && nodes[i].nodeName != "#comment") {
             var swipeoutChild = nodes[i];
-
+            
             // get the button container with the correct id
             if (swipeoutChild.getAttribute('slot') == (buttonPosition + '-buttons') ) {
             // check which item matches morph-button id leftLastButton or rightLastButton
-              // lastButton = swipeoutChild.querySelector('morph-button#' + buttonPosition + 'LastButton');
               if (buttonPosition == 'left') {
-                lastButton = swipeoutChild.children[0]; // querySelector('morph-button#' + buttonPosition + 'LastButton');
+                lastButton = swipeoutChild.children[0];
               } else {
-                lastButton = swipeoutChild.children[swipeoutChild.children.length - 1]; // querySelector('morph-button#' + buttonPosition + 'LastButton');
+                lastButton = swipeoutChild.children[swipeoutChild.children.length - 1];
               }
             }
           }
