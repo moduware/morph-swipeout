@@ -15,15 +15,29 @@
   </head>
   <body>
 
-    <test-fixture id="BasicTestFixture">
+    <test-fixture id="BasicIosTestFixture">
       <template>
         <morph-swipeout platform="ios">
           <span slot="left-buttons">
-            <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+            <morph-button platform="ios" color="green" filled big flat>Action</morph-button>
           </span>
           Swipeout content
           <span slot="right-buttons">
-            <morph-button id="rightLastButton" color="red" filled big flat>Delete</morph-button>
+            <morph-button platform="ios" color="red" filled big flat>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="BasicAndroidTestFixture">
+      <template>
+        <morph-swipeout platform="android">
+          <span slot="left-buttons">
+            <morph-button platform="android" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button platform="android" color="red" filled big flat>Delete</morph-button>
           </span>
         </morph-swipeout>
       </template>
@@ -31,23 +45,84 @@
 
     <script>
       describe('morph-swipeout', () => {
-        let element, items;
 
-        beforeEach( function() {
-          element = fixture('BasicTestFixture');
-          this.observer1 = new Polymer.FlattenedNodesObserver(element, function (info) {
-          items = info;
-        });
-        this.observer1.flush();
+        describe('_getMorphButtonElement()', () => {
+          let iosElement;
+
+          beforeEach( function() {
+            iosElement = fixture('BasicIosTestFixture');
+          });
+
+          it('Should return the correct color attribute of left morph-button', () => {
+            const buttonPosition = 'left';
+            const morphButtonReturnedColorAttribute = iosElement._getMorphButtonElement(buttonPosition).color;
+            const expectedColorAttributeOfMorphButton = 'green';
+            
+            expect(morphButtonReturnedColorAttribute).to.be.equal(expectedColorAttributeOfMorphButton);
+          });
+
+          it('Should return the correct color attribute of right morph-button', () => {
+            const buttonPosition = 'right';
+            const morphButtonReturnedColorAttribute = iosElement._getMorphButtonElement(buttonPosition).color;
+            const expectedColorAttributeOfMorphButton = 'red';
+
+            expect(morphButtonReturnedColorAttribute).to.be.equal(expectedColorAttributeOfMorphButton);
+          });
+
+
+
         });
 
-        it('instantiating the element', () => {
-          console.log('items', items.addedNodes);
-          
-          expect(element).to.be.ok;
+        describe('_getLastMorphButtonBackgroundColor(buttonPosition) for IOS platform', () => {
+          let element2;
+          beforeEach(function () {
+            element2 = fixture('BasicIosTestFixture');
+          });
+
+          it('Should return the correct background-color for left morph-button', () => {
+            const buttonPosition = 'left';
+            const result = element2._getLastMorphButtonBackgroundColor(buttonPosition);
+            console.log('result', result);
+            
+            const expectedBackgroundColor = 'rgb(76, 217, 100)';
+
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+          it('Should return the correct background-color for right morph-button', () => {
+            const buttonPosition = 'right';
+            const result = element2._getLastMorphButtonBackgroundColor(buttonPosition);
+            const expectedBackgroundColor = 'rgb(255, 59, 48)';
+
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+
         });
+
+        // BasicAndroidTestFixture
+        describe('_getLastMorphButtonBackgroundColor(buttonPosition) for Android platform', () => {
+          let element;
+          beforeEach(function () {
+            element = fixture('BasicAndroidTestFixture');
+          });
+
+          it('Should return the correct background-color for left morph-button', () => {
+            const buttonPosition = 'right';
+            const result = element._getLastMorphButtonBackgroundColor(buttonPosition);
+            const expectedBackgroundColor = 'rgb(76, 217, 100)';
+            console.log('result', result);
+            
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+        });
+
 
       });
+
+
+
     </script>
 
   </body>
