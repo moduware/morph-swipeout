@@ -154,6 +154,7 @@
       handleTrack(event) {
         // determining our current state
         const rootContainer = this.$.rootContainer;
+        
         let distance = event.detail.dx;
         let normalizedDistance;
         const direction = event.detail.dx > 0 ? 'right' : 'left';
@@ -185,7 +186,7 @@
         }
         
         // On every bit of interaction we are applying it to our element
-        if(Math.abs(distance) > 312) return;
+        if(Math.abs(distance) > this.offsetWidth) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
 
