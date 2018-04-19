@@ -184,7 +184,12 @@
             distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
           }
         }
+        let scaler = ( Math.abs(distance) / this.offsetWidth ) / 2;
+        let multiplier = (1 - Math.min(scaler, 1));
         
+        if (event.detail.state != 'end') {
+          distance = distance * (multiplier);
+        }
         // On every bit of interaction we are applying it to our element
         if(Math.abs(distance) > this.offsetWidth) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
