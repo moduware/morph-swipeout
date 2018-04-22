@@ -39,13 +39,13 @@
       <demo-snippet>
         <template>
           <!-- standalone swipeout (lonely ranger) -->
-          <morph-swipeout>
+          <morph-swipeout overswiper>
             <span slot="left-buttons">
               <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
             </span>
             Swipeout content 
-            <span slot="right-buttons">
-              <morph-button id="rightLastButton" color="red" filled big flat>Delete</morph-button>
+            <span slot="right-buttons" on-click="buttonClickHandler">
+              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
             </span>
           </morph-swipeout>
 
