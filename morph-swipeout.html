@@ -146,6 +146,12 @@
         Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
       }
 
+      /**
+      * Closes the swipeout element when click outside of itself is detected
+      * @param {Object} - that The original 'this' refering to elemnet itself
+      * @param {Object} - morphButtonRight The right morph-button
+      * @param {Object} - morphButtonLeft The left morph-button
+      */
       _addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft) {
         window.addEventListener('click', function _tapListener(e) {
           let target = e.target;
@@ -166,17 +172,28 @@
       }
 
       _onRightButtonClick(event) {
-        console.log('right button clicked!');
-        this._animateAndDeleteButton();
+        const button = event.target;
+        console.log('right button clicked!', event.target);
+        this._animateAndDeleteButton(button);
       }
 
       _onLeftButtonClick(event) {
         console.log('left button clicked!');
-        this._animateAndDeleteButton();
       }
 
-      _animateAndDeleteButton() {
-        console.log('animate and delete button now!');
+      _animateAndDeleteButton(button) {
+        console.log('animate and delete button now!', button);
+        this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
+        this.$.rootContainer.style.height = '0px';
+        // setTimeout(() => {
+        //   this.parentNode.removeChild(this);
+        // }, 1000);
+
+        setTimeout(function () {
+          this.$.rootContainer.classList.add("animated");
+          console.log('animated');
+          
+        }.bind(this), 1000);
       }
 
       /**
