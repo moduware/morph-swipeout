@@ -137,19 +137,24 @@
         
         let that = this;
         const morphButtonRight = this._getMorphButtonElement('right');
-        // ADD tap event to whole body
+        const morphButtonLeft = this._getMorphButtonElement('left');
+        // TODO: REFACTOR _tapListener TO A SEPERATE FUNCTION
+        // tap event to whole body
+        this._addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft);
+        morphButtonRight.addEventListener('click', event => this._onRightButtonClick(event));
+        morphButtonLeft.addEventListener('click', event => this._onLeftButtonClick(event));
+        Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
+      }
+
+      _addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft) {
         window.addEventListener('click', function _tapListener(e) {
           let target = e.target;
           // if the click is outside the button then close the swipeout component
-          
-          if (target != that && target != morphButtonRight) {
+
+          if (target != that && target != morphButtonRight && target != morphButtonLeft) {
             that._closeSwipe();
           }
         });
-        let rightButton = this._getMorphButtonElement('right');
-        rightButton.addEventListener('click', event => this._onClick(event));
-
-        Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
       }
 
       disconnectedCallback() {
@@ -160,9 +165,18 @@
         Polymer.Gestures.removeListener(this, 'track', () => this.handleTrack());
       }
 
-      _onClick(event) {
+      _onRightButtonClick(event) {
         console.log('right button clicked!');
-        
+        this._animateAndDeleteButton();
+      }
+
+      _onLeftButtonClick(event) {
+        console.log('left button clicked!');
+        this._animateAndDeleteButton();
+      }
+
+      _animateAndDeleteButton() {
+        console.log('animate and delete button now!');
       }
 
       /**
@@ -187,18 +201,6 @@
         } else if(event.detail.state == 'track') {
           trackedDistance = distance;
 
-          if (Math.abs(trackedDistance) > this.offsetWidth / 2) {
-            // console.log('fire!');
-            let buttonPosition = 'right';
-            let button = this._getMorphButtonElement(buttonPosition);
-            // button.click();
-            setTimeout(function () {
-              // alert('hello world'); 
-              button.click();
-              Polymer.Gestures.removeListener(this, 'track', this.handleTrack);
-              return;
-            }, 0.1);
-          }
           // console.log('tracking...', trackedDistance);
         } else if(event.detail.state == 'end') {
           // after user finished interaction, enabling css smoother back
@@ -217,9 +219,13 @@
             // when swipe in right direction, reveal left buttons
             distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
           }
+
+          if (normalizedDistance > this.offsetWidth / 2) {
+            let buttonPosition = direction == 'left' ? 'right' : 'left';
+            let button = this._getMorphButtonElement(buttonPosition);
+            console.log('fire overswipe events!', button);
+          }
         }
-
-
 
         let scaler = ( Math.abs(distance) / this.offsetWidth ) / 2;
         let multiplier = (1 - Math.min(scaler, 1));
@@ -228,47 +234,10 @@
           distance = distance * (multiplier);
         }
 
-        
         // On every bit of interaction we are applying it to our element
         if(Math.abs(distance) > this.offsetWidth) return;
-        // rootContainer.style.transform = `translateX(${distance}px)`;
-        this._rootContaninerTransformTranslate(rootContainer, distance, normalizedDistance, event);
-        if (normalizedDistance > this._rightButtonsContainerSize / 2) {
-          // setTimeout(function () { alert('hello world'); }, 1);
-        }
-      }
-
-      _rootContaninerTransformTranslate(rootContainer, distance, normalizedDistance, event, callback) {
         rootContainer.style.transform = `translateX(${distance}px)`;
-
-        // Call the callback
-        if (callback && typeof (callback) === "function") {
-          // console.log('Callback is here!');
-          callback.call(this, normalizedDistance, event);
-        }
       }
-
-      overswipeCallbackAlert(normalizedDistance, event) {
-        // I'm the callback
-        if (Math.abs(normalizedDistance) > this.offsetWidth / 2) {
-          // console.log('Am I called????');
-          let buttonPosition = 'right';
-          let button = this._getMorphButtonElement(buttonPosition);
-          button.click();
-          setTimeout(function () { 
-            // alert('hello world'); 
-            button.click();
-          }, 0.1);
-        }
-      }
-
-      buttonClickHandler() {
-        console.log('button clicked!');
-        
-      }
-        
-        // calling the function passing the callback
-        // doSomething(foo);
 
       /**
       * Closes the swipeout element
