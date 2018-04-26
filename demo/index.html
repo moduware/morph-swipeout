@@ -23,7 +23,8 @@
             background-color: #eff0f4;
             padding-left: 0;
             padding-right: 0;
-            height: 50px;
+            padding-top: 20px;
+            padding-bottom: 20px;
           }
         }
 
@@ -48,6 +49,25 @@
               <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
             </span>
           </morph-swipeout>
+          <morph-swipeout overswiper>
+            <span slot="left-buttons">
+              <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+            </span>
+            Swipeout content 
+            <span slot="right-buttons" on-click="buttonClickHandler">
+              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
+            </span>
+          </morph-swipeout>
+          <morph-swipeout overswiper>
+            <span slot="left-buttons">
+              <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+            </span>
+            Swipeout content 
+            <span slot="right-buttons" on-click="buttonClickHandler">
+              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
+            </span>
+          </morph-swipeout>
+
 
           <!-- <morph-list-view>
             <morph-list-view-item swipeout>
