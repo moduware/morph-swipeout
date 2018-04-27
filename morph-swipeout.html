@@ -164,9 +164,9 @@
 
       /**
       * Closes the swipeout element when click outside of itself is detected
-      * @param {Object} - that The original 'this' refering to elemnet itself
-      * @param {Object} - morphButtonRight The right morph-button
-      * @param {Object} - morphButtonLeft The left morph-button
+      * @param {Object} that - The original 'this' refering to elemnet itself
+      * @param {Object} morphButtonRight - The right morph-button
+      * @param {Object} morphButtonLeft - The left morph-button
       */
       _addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft) {
         window.addEventListener('click', function _tapListener(e) {
@@ -201,12 +201,16 @@
         this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         await this.waitForTranstionEnd(this.$.rootContainer);
 
-        // this.$.animationContainer.style.minHeight = 'auto';
         this.$.animationContainer.style.height = '0px';
         await this.waitForTranstionEnd(this.$.animationContainer, 'height');
         this.parentNode.removeChild(this);
       }
 
+      /**
+      * Function to wait for transition end
+      * @param {Object} target - Element to listen for transition end
+      * @param {String} property - Specific property to listen for transition
+      */
       waitForTranstionEnd(target, property) {
         return new Promise((resolve, reject) => {
           let dynamicHandler = null;
@@ -231,7 +235,7 @@
 
       /**
       * Computes for the distance for reveal of right buttons
-      * @param {Object} - event The value of the travel of event left or right scroll
+      * @param {Object} event - The value of the travel of event left or right scroll
       */
       handleTrack(event) {
         // determining our current state
@@ -300,7 +304,7 @@
 
       /**
       * Computes for the distance for reveal of buttons
-      * @param {Number} - normalizedDistance The value of the travel of event left or right scroll
+      * @param {Number} normalizedDistance - The value of the travel of event left or right scroll
       */
       _computeDistanceToRevealRightButtons(normalizedDistance) {
         // when swipe in left direction, reveal right buttons
@@ -313,7 +317,7 @@
 
       /**
       * Computes for the distance for reveal of left buttons
-      * @param {Number} - normalizedDistance The value of the travel of event left or right scroll
+      * @param {Number} normalizedDistance - The value of the travel of event left or right scroll
       */
       _computeDistanceToRevealLeftButtons(normalizedDistance) {
         // when swipe in left direction, reveal right buttons
@@ -326,7 +330,7 @@
 
       /**
       * Gets the background-color of morph-button
-      * @param {String} - buttonPosition The position of the button being revealed
+      * @param {String} buttonPosition - The position of the button being revealed
       */
       _getLastMorphButtonBackgroundColor(buttonPosition) {
         const morphButton = this._getMorphButtonElement(buttonPosition);
@@ -335,7 +339,7 @@
 
       /**
       * Gets the morph-button element being revealed
-      * @param {String} - buttonPosition The position of the button being revealed
+      * @param {String} buttonPosition - The position of the button being revealed
       */
       _getMorphButtonElement(buttonPosition) {
         let items, lastButton;
