@@ -172,7 +172,6 @@
         window.addEventListener('click', function _tapListener(e) {
           let target = e.target;
           // if the click is outside the button then close the swipeout component
-
           if (target != that && target != morphButtonRight && target != morphButtonLeft) {
             that._closeSwipe();
           }
@@ -197,6 +196,10 @@
         console.log('left button clicked!');
       }
 
+      /**
+      * Async function animate and delete button
+      * @param {Object} button - Element animate and delete
+      */
       async _animateAndDeleteButton(button) {
         this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         await this.waitForTranstionEnd(this.$.rootContainer);
@@ -227,6 +230,10 @@
         });
       }
 
+      /**
+      * Async function to wait for specified time
+      * @param {Number} milliseconds - time delay in milliseconds
+      */
       _sleep(milliseconds) {
         return new Promise((resolve, reject) => {
           setTimeout(() => resolve(), milliseconds);
