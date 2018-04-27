@@ -31,6 +31,14 @@
         /* transform: translateX(-40px); */
       }
 
+      .animation-container {
+        transition: height 0.4s linear;
+      }
+
+      .animation-container.disappear-animation {
+        /* min-height: auto; */
+        height: 0 !important;
+      }
 
       :host([platform="ios"]) .root-container {
         min-height: var(--ios-root-container-min-height);
@@ -85,18 +93,21 @@
         margin-right: -1px;
       }
 
+
     </style>
 
-    <div class="root-container" id="rootContainer">
-      <div class="left-buttons-container" id="leftButtonsContainer">
-        <slot name="left-buttons"></slot>
-      </div>
-  
-      <!-- main content of swipeout goes here -->
-      <slot></slot>
-  
-      <div class="right-buttons-container" id="rightButtonsContainer">
-        <slot name="right-buttons"></slot>
+    <div class="animation-container" id="animationContainer">
+      <div class="root-container" id="rootContainer">
+        <div class="left-buttons-container" id="leftButtonsContainer">
+          <slot name="left-buttons"></slot>
+        </div>
+    
+        <!-- main content of swipeout goes here -->
+        <slot></slot>
+    
+        <div class="right-buttons-container" id="rightButtonsContainer">
+          <slot name="right-buttons"></slot>
+        </div>
       </div>
     </div>
 
@@ -146,6 +157,11 @@
         Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
       }
 
+      ready() {
+        super.ready();
+        this.$.animationContainer.style.height = this.clientHeight + 'px';
+      }
+
       /**
       * Closes the swipeout element when click outside of itself is detected
       * @param {Object} - that The original 'this' refering to elemnet itself
@@ -181,19 +197,36 @@
         console.log('left button clicked!');
       }
 
-      _animateAndDeleteButton(button) {
-        console.log('animate and delete button now!', button);
+      async _animateAndDeleteButton(button) {
         this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
-        this.$.rootContainer.style.height = '0px';
-        // setTimeout(() => {
-        //   this.parentNode.removeChild(this);
-        // }, 1000);
+        await this.waitForTranstionEnd(this.$.rootContainer);
 
-        setTimeout(function () {
-          this.$.rootContainer.classList.add("animated");
-          console.log('animated');
-          
-        }.bind(this), 1000);
+        // this.$.animationContainer.style.minHeight = 'auto';
+        this.$.animationContainer.style.height = '0px';
+        await this.waitForTranstionEnd(this.$.animationContainer, 'height');
+        this.parentNode.removeChild(this);
+      }
+
+      waitForTranstionEnd(target, property) {
+        return new Promise((resolve, reject) => {
+          let dynamicHandler = null;
+          dynamicHandler = (event) => {
+            if(property == null) {
+              target.removeEventListener('transitionend', dynamicHandler);
+              resolve();
+            } else if(property == event.propertyName) {
+              target.removeEventListener('transitionend', dynamicHandler);
+              resolve();
+            }
+          }
+          target.addEventListener('transitionend', dynamicHandler);
+        });
+      }
+
+      _sleep(milliseconds) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => resolve(), milliseconds);
+        });
       }
 
       /**
