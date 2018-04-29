@@ -264,6 +264,9 @@
 
           // console.log('tracking...', trackedDistance);
         } else if(event.detail.state == 'end') {
+          // TODO: CREATE this.userTrackEnd() method and extract this part of track == end
+          // this._userTrackingEnd(rootContainer, direction, distance);
+
           // after user finished interaction, enabling css smoother back
           rootContainer.classList.remove('no-transition');
           
@@ -298,6 +301,32 @@
         // On every bit of interaction we are applying it to our element
         if(Math.abs(distance) > this.offsetWidth) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
+      }
+
+      _userTrackingEnd(rootContainer, direction) {
+        // after user finished interaction, enabling css smoother back
+        rootContainer.classList.remove('no-transition');
+
+        // calculating positive distance (signless)
+        const normalizedDistance = Math.abs(distance);
+        console.log('normalizedDistance', distance);
+        
+        // determining our final position by last distance
+        // if too small, just cancel
+        // if further than half length of button container then reveal buttons
+        if (direction == 'left') {
+          // when swipe in left direction, reveal right buttons
+          distance = this._computeDistanceToRevealRightButtons(normalizedDistance);
+        } else {
+          // when swipe in right direction, reveal left buttons
+          distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
+        }
+
+        if (normalizedDistance > this.offsetWidth / 2) {
+          let buttonPosition = direction == 'left' ? 'right' : 'left';
+          let button = this._getMorphButtonElement(buttonPosition);
+          console.log('fire overswipe events!', button);
+        }
       }
 
       /**
