@@ -272,11 +272,10 @@
           distance = this._computeDistanceToShowOrHideButton(direction, normalizedDistance);
 
           // this will detect overswipe and fire animate and delete
-          if (normalizedDistance > this.offsetWidth / 2) {
+          if (normalizedDistance > this.offsetWidth / 2 && this.overswiper) {
             let buttonPosition = direction == 'left' ? 'right' : 'left';
             let button = this._getMorphButtonElement(buttonPosition);
-            console.log('fire overswipe events!', button);
-            this.overswiped = true;
+            this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
             this._animateAndDeleteButton(button);
           }
         }
@@ -289,7 +288,7 @@
         }
 
         // On every bit of interaction we are applying it to our element
-        if(Math.abs(distance) > this.offsetWidth || this.overswiped) return;
+        if(Math.abs(distance) > this.offsetWidth || this.overswiped) return; // this.overswipe here is to cancel the rest of the tracking animation and go to just animate and delete
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
 
