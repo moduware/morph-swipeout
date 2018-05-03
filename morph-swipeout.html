@@ -200,8 +200,12 @@
       * Async function animate and delete button
       * @param {Object} button - Element animate and delete
       */
-      async _animateAndDeleteButton(button) {
-        this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
+      async _animateAndDeleteButton(button, direction) {
+        if(direction == 'left') {
+          this.$.rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
+        } else {
+          this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
+        }
         await this.waitForTranstionEnd(this.$.rootContainer);
 
         this.$.animationContainer.style.height = '0px';
@@ -276,7 +280,7 @@
             let buttonPosition = direction == 'left' ? 'right' : 'left';
             let button = this._getMorphButtonElement(buttonPosition);
             this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
-            this._animateAndDeleteButton(button);
+            this._animateAndDeleteButton(button, buttonPosition);
           }
         }
 
