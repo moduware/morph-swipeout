@@ -245,14 +245,11 @@
       * @param {Object} event - The value of the travel of event left or right scroll
       */
       handleTrack(event) {
-        // determining our current state
         const rootContainer = this.$.rootContainer;
-        
         let distance = event.detail.dx;
         let normalizedDistance, trackedDistance;
         const direction = event.detail.dx > 0 ? 'right' : 'left';
 
-        // console.log(event);
         if(event.detail.state == 'start') {
           // we don't want smooth transitions during user interaction, so removing css smoother
           rootContainer.classList.add('no-transition');
@@ -264,25 +261,15 @@
 
           // console.log('tracking...', trackedDistance);
         } else if(event.detail.state == 'end') {
-          // TODO: CREATE this.userTrackEnd() method and extract this part of track == end
-          // this._userTrackingEnd(rootContainer, direction, distance);
-
           // after user finished interaction, enabling css smoother back
           rootContainer.classList.remove('no-transition');
           
           // calculating positive distance (signless)
           normalizedDistance = Math.abs(distance);
 
-          // determining our final position by last distance
-          // if too small, just cancel
+          // determining our final position by last distance, if too small, just cancel
           // if further than half length of button container then reveal buttons
-          if(direction == 'left') {
-            // when swipe in left direction, reveal right buttons
-            distance = this._computeDistanceToRevealRightButtons(normalizedDistance);
-          } else {
-            // when swipe in right direction, reveal left buttons
-            distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
-          }
+          distance = this._computeDistanceToShowOrHideButton(direction, normalizedDistance);
 
           // this will detect overswipe and fire animate and delete
           if (normalizedDistance > this.offsetWidth / 2) {
@@ -294,9 +281,9 @@
           }
         }
 
+        // scales the swiping to almost not moving
         let scaler = ( Math.abs(distance) / this.offsetWidth ) / 2;
         let multiplier = (1 - Math.min(scaler, 1));
-        
         if (event.detail.state != 'end' && !this.overswiper) {
           distance = distance * (multiplier);
         }
@@ -306,29 +293,13 @@
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
 
-      _userTrackingEnd(rootContainer, direction) {
-        // after user finished interaction, enabling css smoother back
-        rootContainer.classList.remove('no-transition');
-
-        // calculating positive distance (signless)
-        const normalizedDistance = Math.abs(distance);
-        console.log('normalizedDistance', distance);
-        
-        // determining our final position by last distance
-        // if too small, just cancel
-        // if further than half length of button container then reveal buttons
+      _computeDistanceToShowOrHideButton(direction, normalizedDistance) {
         if (direction == 'left') {
           // when swipe in left direction, reveal right buttons
-          distance = this._computeDistanceToRevealRightButtons(normalizedDistance);
+          return this._computeDistanceToRevealRightButtons(normalizedDistance);
         } else {
           // when swipe in right direction, reveal left buttons
-          distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
-        }
-
-        if (normalizedDistance > this.offsetWidth / 2) {
-          let buttonPosition = direction == 'left' ? 'right' : 'left';
-          let button = this._getMorphButtonElement(buttonPosition);
-          console.log('fire overswipe events!', button);
+          return this._computeDistanceToRevealLeftButtons(normalizedDistance);
         }
       }
 
