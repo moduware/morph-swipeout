@@ -284,10 +284,13 @@
             distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
           }
 
+          // this will detect overswipe and fire animate and delete
           if (normalizedDistance > this.offsetWidth / 2) {
             let buttonPosition = direction == 'left' ? 'right' : 'left';
             let button = this._getMorphButtonElement(buttonPosition);
             console.log('fire overswipe events!', button);
+            this.overswiped = true;
+            this._animateAndDeleteButton(button);
           }
         }
 
@@ -299,7 +302,7 @@
         }
 
         // On every bit of interaction we are applying it to our element
-        if(Math.abs(distance) > this.offsetWidth) return;
+        if(Math.abs(distance) > this.offsetWidth || this.overswiped) return;
         rootContainer.style.transform = `translateX(${distance}px)`;
       }
 
