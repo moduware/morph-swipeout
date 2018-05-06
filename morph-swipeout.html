@@ -132,6 +132,29 @@
           overswiper: {
             type: Boolean,
             value: false,
+          },
+          /**
+          *  Property used to decide if animate and delete action from the right is executed when swipe far enough
+          */
+          overswipeDeleteRight: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+          /**
+          *  Property used to decide if animate and delete action from the left is executed when swipe far enough
+          */
+          overswipeDeleteLeft: {
+            type: Boolean,
+            value: false,
+            notify: true
+          },
+          /**
+          *  Property used to decide if action on the left most or right most button is executed with a text prompt when swipe far enough. 
+          *  When this is present, it is assumed that a prompt is needed. Value should not be null.
+          */
+          swipeoutPromptText: {
+            type: String,
           }
         };
       }
@@ -187,23 +210,25 @@
       }
 
       _onRightButtonClick(event) {
-        const button = event.target;
         console.log('right button clicked!', event.target);
-        this._animateAndDeleteButton(button);
+        const button = event.target;
+        this._animateAndDeleteAction(button, 'right');
       }
 
       _onLeftButtonClick(event) {
         console.log('left button clicked!');
+        const button = event.target;
+        // this._animateAndDeleteAction(button, 'left');
       }
 
       /**
       * Async function animate and delete button
       * @param {Object} button - Element animate and delete
       */
-      async _animateAndDeleteButton(button, direction) {
-        if(direction == 'left') {
+      async _animateAndDeleteAction(button, buttonPosition) {
+        if(buttonPosition == 'left') {
           this.$.rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
-        } else {
+        } else if (buttonPosition == 'right') {
           this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         }
         await this.waitForTranstionEnd(this.$.rootContainer);
@@ -278,7 +303,7 @@
           // If we allow overswipe on element
           if(this.overswiper) {
             // Checking if was overswiped
-            if(normalizedDistance > this.offsetWidth) {
+            if(normalizedDistance > this.offsetWidth / 2) {
               this._handleOverswipe(direction);
             }
           }
@@ -296,9 +321,36 @@
 
       _handleOverswipe(direction) {
         const buttonPosition = direction == 'left' ? 'right' : 'left';
-        const button = this._getMorphButtonElement(buttonPosition);
-        this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
-        button.click();
+        
+        if (buttonPosition == 'right') {
+          // handle right button overswipe
+          this._handleRightButtonOverswipe();
+        } else if (buttonPosition == 'left') {
+          // handle left button overswipe
+          this._handleLeftButtonOverswipe();
+        }
+      }
+
+      _handleRightButtonOverswipe() {
+        const button = this._getMorphButtonElement('right');
+        if (this.overswipeDeleteRight) {
+          this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
+          this._animateAndDeleteAction(button, 'right');
+        } else {
+          button.click();
+        }
+      }
+
+      _handleLeftButtonOverswipe() {
+        const button = this._getMorphButtonElement('left');
+        console.log('left left');
+        
+        if (this.overswipeDeleteLeft) {
+          this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
+          this._animateAndDeleteAction(button, 'left');
+        } else {
+          button.click();
+        }
       }
 
       _calculateSwipeSlowDown(distance, offset, factor) {
