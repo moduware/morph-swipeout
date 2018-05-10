@@ -232,10 +232,13 @@
           this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         }
         await this.waitForTranstionEnd(this.$.rootContainer);
-        let deleteItem = this._deleteListItemPromptReturnValue();
-        if (deleteItem == false) {
-          this.overswiped = false; // this will return the swiping action to normal
-          return;
+        // this will give a js prompt return value. js prompt will be called when swipeoutPromptText is present and valid string value (not null or empty)
+        if (this.overswiped && this.swipeoutPromptText) {
+          let response = this._showPromptWithCustomTextAndReturnResponseValue();
+          if (response == false) {
+            this.overswiped = false; // this will return the swiping action to normal
+            return;
+          }
         }
         await this._sleep(1);
         this.$.animationContainer.style.height = '0px';
@@ -246,14 +249,9 @@
       /**
       * Function to show a js prompt and return the response value OK == true
       */
-      _deleteListItemPromptReturnValue() {
-        let result;
-        if (this.overswiped) {
-          if (this.swipeoutPromptText) {
-            let message = this.swipeoutPromptText;
-            result = window.confirm(message);
-          }
-        }
+      _showPromptWithCustomTextAndReturnResponseValue() {
+        let message = this.swipeoutPromptText;
+        let result = window.confirm(message);
         return result;
       }
 
