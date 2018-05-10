@@ -216,7 +216,7 @@
       }
 
       _onLeftButtonClick(event) {
-        console.log('left button clicked!');
+        console.log('left button action triggered!');
         const button = event.target;
         // this._animateAndDeleteAction(button, 'left');
       }
@@ -232,10 +232,29 @@
           this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         }
         await this.waitForTranstionEnd(this.$.rootContainer);
-
+        let deleteItem = this._deleteListItemPromptReturnValue();
+        if (deleteItem == false) {
+          this.overswiped = false; // this will return the swiping action to normal
+          return;
+        }
+        await this._sleep(1);
         this.$.animationContainer.style.height = '0px';
         await this.waitForTranstionEnd(this.$.animationContainer, 'height');
         this.parentNode.removeChild(this);
+      }
+
+      /**
+      * Function to show a js prompt and return the response value OK == true
+      */
+      _deleteListItemPromptReturnValue() {
+        let result;
+        if (this.overswiped) {
+          if (this.swipeoutPromptText) {
+            let message = this.swipeoutPromptText;
+            result = window.confirm(message);
+          }
+        }
+        return result;
       }
 
       /**
