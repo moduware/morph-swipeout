@@ -309,40 +309,8 @@
           } else {
             newTransform = 0;
           }
-
-
-
-          // determining our final position by last distance, if too small, just cancel
-          // if further than half length of button container then reveal buttons
-          // if (direction == 'left') {
-          //   // when swipe in left direction, reveal right buttons
-          //   distance = this._computeDistanceToRevealRightButtons(normalizedDistance);
-          // } else if(direction == 'right') {
-          //   // when swipe in right direction, reveal left buttons
-          //   distance = this._computeDistanceToRevealLeftButtons(normalizedDistance);
-          // }
-          
-          // If we allow overswipe on element
-          // if(this.overswiper) {
-          //   // Checking if was overswiped
-          //   if(normalizedDistance > this.offsetWidth / 2) {
-          //     await this._completeOverswipe(direction);
-          //     //this.overswiped = true;
-          //     await this._handleOverswipe(direction);
-          //     //this.overswiped = false;
-          //   }
-          // }
         }
-
-        // For non-overswipers we are slowing swipe if user hasn't finished
-        // if(!this.overswiper && event.detail.state != 'end') {
-        //   distance = this._calculateSwipeSlowDown(distance, this.offsetWidth);
-        // }
-
-        // On every bit of interaction we are applying it to our element
-        // if(this.overswiped || Math.abs(distance) > this.offsetWidth) return; // this.overswipe here is to cancel the rest of the tracking animation and go to just animate and delete
-        // if(Math.abs(distance) > this.offsetWidth) return; // this.overswipe here is to cancel the rest of the tracking animation and go to just animate and delete
-        
+        // Shared code: this is done after every tracking event 
         this.$.rootContainer.style.transform = `translateX(${newTransform}px)`;
       }
 
@@ -358,11 +326,6 @@
         if (buttonPosition == 'left') {
           this.$.rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
         } else if (buttonPosition == 'right') {
-          // if(this.$.rootContainer.style.transform == `translateX(-${this.offsetWidth}px)`) {
-          //   console.log('hey hey you are equal!');
-          //   this.$.rootContainer.style.transform--;
-          // }
-          // this.$.rootContainer.style.transform = this.$.rootContainer.style.transform == `translateX(-${this.offsetWidth}px)` ? `translateX(-${this.offsetWidth + 1}px)` : 0;
           this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
         }
         await this.waitForTranstionEnd(this.$.rootContainer);
@@ -385,7 +348,6 @@
         }
 
         if (confirmed && button.hasAttribute('swipeout-delete')) {
-          //this.overswiped = true; // to cancel the rest of the tracking animation and go to just animate and delete
           await this._animateDeleteAction(button, buttonPosition);
         }
       }
