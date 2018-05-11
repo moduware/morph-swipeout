@@ -39,32 +39,47 @@
       <h3>Basic morph-swipeout demo</h3>
       <demo-snippet>
         <template>
-          <morph-swipeout overswiper overswipe-delete-right swipeout-prompt-text="Are you sure you want to delete this item?">
+
+          <morph-swipeout overswiper>
+
             <span slot="left-buttons">
               <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
             </span>
+
             Swipeout content 
+
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled big flat swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
             </span>
+
           </morph-swipeout>
-          <morph-swipeout>
+
+          <morph-swipeout overswiper>
+
             <span slot="left-buttons">
               <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
             </span>
+
             Swipeout content 
+
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled big flat swipeout-delete>Delete</morph-button>
             </span>
+
           </morph-swipeout>
-          <morph-swipeout overswiper overswipe-delete-right>
+          
+          <morph-swipeout overswiper>
+
             <span slot="left-buttons">
-              <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+              <morph-button id="leftLastButton" color="red" filled big flat swipeout-delete>Delete</morph-button>
             </span>
+
             Swipeout content 
+
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled big flat >Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled big flat swipeout-delete>Delete</morph-button>
             </span>
+            
           </morph-swipeout>
 
 
