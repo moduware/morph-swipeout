@@ -213,23 +213,26 @@
         Polymer.Gestures.removeListener(this, 'track', () => this.handleTrack());
       }
 
-      _onRightButtonClick(event) {
-        console.log('right button clicked!', event.target);
+      async _onRightButtonClick(event) {
+        // console.log('right button clicked!', event.target);
         const button = event.target;
-        // this._animateDeleteAction(button, 'right');
+        if (button.hasAttribute('swipeout-delete')) {
+          console.log('right button clicked!', event.target);
+          await this._animateDeleteAction(button);
+        }
       }
 
       _onLeftButtonClick(event) {
         console.log('left button action triggered!');
         const button = event.target;
-        // this._animateDeleteAction(button, 'left');
+        // this._animateDeleteAction(button);
       }
 
       /**
       * Async function animate and delete button
       * @param {Object} button - Element animate and delete
       */
-      async _animateDeleteAction(button, buttonPosition) {
+      async _animateDeleteAction(button) {
         this.$.animationContainer.style.height = '0px';
         await this.waitForTranstionEnd(this.$.animationContainer, 'height');
         this.parentNode.removeChild(this);
@@ -348,7 +351,7 @@
         }
 
         if (confirmed && button.hasAttribute('swipeout-delete')) {
-          await this._animateDeleteAction(button, buttonPosition);
+          await this._animateDeleteAction(button);
         }
       }
 
