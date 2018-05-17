@@ -133,22 +133,7 @@
             type: Boolean,
             value: false,
           },
-          /**
-          *  Property used to decide if animate and delete action from the right is executed when swipe far enough
-          */
-          overswipeDeleteRight: {
-            type: Boolean,
-            value: false,
-            notify: true
-          },
-          /**
-          *  Property used to decide if animate and delete action from the left is executed when swipe far enough
-          */
-          overswipeDeleteLeft: {
-            type: Boolean,
-            value: false,
-            notify: true
-          },
+         
           /**
           *  Property used to decide if action on the left most or right most button is executed with a text prompt when swipe far enough. 
           *  When this is present, it is assumed that a prompt is needed. Value should not be null.
@@ -173,14 +158,16 @@
         this.style.setProperty('--swipe-action-after-background-color-right', this._getLastMorphButtonBackgroundColor('right'));
         this.style.setProperty('--swipe-action-after-background-color-left', this._getLastMorphButtonBackgroundColor('left'));
         
-        let that = this;
+        let self = this;
         const morphButtonRight = this._getMorphButtonElement('right');
         const morphButtonLeft = this._getMorphButtonElement('left');
         
         // tap event to whole body
-        this._addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft);
-        morphButtonRight.addEventListener('click', event => this._onRightButtonClick(event));
-        morphButtonLeft.addEventListener('click', event => this._onLeftButtonClick(event));
+        // TODO: if _addSwipeoutClickOutsideEventListners is removed the transition end listener to height of item going to 0 doesn't work
+        this._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
+        // window.addEventListener('click', () => { console.log(this);}, false);
+        // morphButtonRight.addEventListener('click', event => this._onRightButtonClick(event));
+        // morphButtonLeft.addEventListener('click', event => this._onLeftButtonClick(event));
         Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
       }
 
@@ -191,16 +178,16 @@
 
       /**
       * Closes the swipeout element when click outside of itself is detected
-      * @param {Object} that - The original 'this' refering to elemnet itself
+      * @param {Object} self - The original 'this' refering to elemnet itself
       * @param {Object} morphButtonRight - The right morph-button
       * @param {Object} morphButtonLeft - The left morph-button
       */
-      _addSwipeoutClickOutsideEventListners(that, morphButtonRight, morphButtonLeft) {
+      _addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft) {
         window.addEventListener('click', function _tapListener(e) {
           let target = e.target;
           // if the click is outside the button then close the swipeout component
-          if (target != that && target != morphButtonRight && target != morphButtonLeft) {
-            that._closeSwipe();
+          if (target != self && target != morphButtonRight && target != morphButtonLeft) {
+            self._closeSwipe();
           }
         });
       }
@@ -211,21 +198,25 @@
         // REMOVE event window click listener
         window.removeEventListener('click', this._tapListener);
         Polymer.Gestures.removeListener(this, 'track', () => this.handleTrack());
+
       }
 
-      async _onRightButtonClick(event) {
+      _onRightButtonClick(event) {
         // console.log('right button clicked!', event.target);
         const button = event.target;
-        if (button.hasAttribute('swipeout-delete')) {
-          console.log('right button clicked!', event.target);
-          await this._animateDeleteAction(button);
-        }
+        // if (button.hasAttribute('item-delete')) {
+        //   console.log('right button clicked!', event.target);
+        //   await this._animateDeleteAction(button);
+        // }
       }
 
       _onLeftButtonClick(event) {
         console.log('left button action triggered!');
         const button = event.target;
-        // this._animateDeleteAction(button);
+        // if (button.hasAttribute('item-delete')) {
+        //   console.log('left button clicked!', event.target);
+        //   await this._animateDeleteAction(button);
+        // }
       }
 
       /**
@@ -342,17 +333,28 @@
         const swipeoutPromptText = button.getAttribute('swipeout-prompt-text');
         let confirmed = false;
         if (swipeoutPromptText) {
-          confirmed = confirm(swipeoutPromptText);
+          confirmed = await this._confirmDialog(swipeoutPromptText);//confirm(swipeoutPromptText);
           if (confirmed) {
             button.click();
           }
+        } else if (button.hasAttribute('swipeout-delete')) {
+          await this._animateDeleteAction(button);
         } else {
-          button.click()
+          button.click();
         }
 
         if (confirmed && button.hasAttribute('swipeout-delete')) {
           await this._animateDeleteAction(button);
         }
+      }
+
+      _confirmDialog(text) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            const confirmed = confirm(text);
+            resolve(confirmed);
+          }, 0);
+        });
       }
 
       _calculateSwipeSlowDown(distance, offset, factor) {
