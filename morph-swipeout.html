@@ -198,21 +198,23 @@
         Polymer.Gestures.removeListener(this, 'track', () => this.handleTrack());
 
       }
-
+      
+      /**
+      * Async function callback of click event listener on right most button
+      */
       async _onRightButtonClick(event) {
-        console.log('right button clicked!');
         const button = event.target;
         if (button.hasAttribute('item-delete')) {
-          console.log('right button clicked!', event.target);
           await this._animateDeleteAction(button);
         }
       }
-
+      
+      /**
+      * Async function callback of click event listener on left most button
+      */
       async _onLeftButtonClick(event) {
-        console.log('left button action triggered!');
         const button = event.target;
         if (button.hasAttribute('item-delete')) {
-          console.log('left button clicked!', event.target);
           await this._animateDeleteAction(button);
         }
       }
@@ -314,7 +316,6 @@
 
       async _completeOverswipe(direction) {
         const buttonPosition = direction == 'left' ? 'right' : 'left';
-
         if (buttonPosition == 'left') {
           this.$.rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
         } else if (buttonPosition == 'right') {
@@ -333,7 +334,7 @@
           if (confirmed && button.hasAttribute('swipeout-delete')) {
             await this._animateDeleteAction(button);
           }
-        } else if (button.hasAttribute('swipeout-delete')) {
+        } else if (button.hasAttribute('swipeout-delete') || button.hasAttribute('item-delete')) {
           await this._animateDeleteAction(button);
         } else {
           button.click();
