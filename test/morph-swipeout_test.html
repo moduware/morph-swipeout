@@ -10,8 +10,8 @@
     <script src="../../web-component-tester/browser.js"></script>
 
     <link rel="import" href="../morph-swipeout.html">
-    <link rel="import" href="../../morph-button/morph-button.html">
     <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
+    <link rel="import" href="../../morph-button/morph-button.html">
   </head>
   <body>
 
@@ -80,40 +80,45 @@
           });
 
           it('Should return the correct background-color for left morph-button', () => {
-            const buttonPosition = 'left';
-            const result = element2._getLastMorphButtonBackgroundColor(buttonPosition);
-            console.log('result', result);
-            
+            const leftMorphButton = element2._getMorphButtonElement('left');
+            const result = element2._getLastMorphButtonBackgroundColor(leftMorphButton);
+            const styles = window.getComputedStyle(leftMorphButton);
             const expectedBackgroundColor = 'rgb(76, 217, 100)';
 
             expect(result).to.equal(expectedBackgroundColor);
           });
 
           it('Should return the correct background-color for right morph-button', () => {
-            const buttonPosition = 'right';
-            const result = element2._getLastMorphButtonBackgroundColor(buttonPosition);
+            const rightMorphButton = element2._getMorphButtonElement('right');
+            const result = element2._getLastMorphButtonBackgroundColor(rightMorphButton);
             const expectedBackgroundColor = 'rgb(255, 59, 48)';
 
             expect(result).to.equal(expectedBackgroundColor);
           });
 
-
         });
 
         // BasicAndroidTestFixture
         describe('_getLastMorphButtonBackgroundColor(buttonPosition) for Android platform', () => {
-          let element;
-          beforeEach(function () {
-            element = fixture('BasicAndroidTestFixture');
+          let element3;
+          let rightMorphButton;
+
+          beforeEach(function (done) {
+            element3= fixture('BasicAndroidTestFixture');
+            rightMorphButton = element3._getMorphButtonElement('left');
+            done();
           });
 
-          it('Should return the correct background-color for left morph-button', () => {
-            const buttonPosition = 'right';
-            const result = element._getLastMorphButtonBackgroundColor(buttonPosition);
-            const expectedBackgroundColor = 'rgb(76, 217, 100)';
-            console.log('result', result);
-            
-            expect(result).to.equal(expectedBackgroundColor);
+          it('Should return the correct background-color for left morph-button', (done) => {
+            const expectedBackgroundColor = 'rgb(76, 175, 80)';
+
+            setTimeout(function() {
+              let styles = window.getComputedStyle(rightMorphButton);
+              let result = styles.getPropertyValue('background-color');
+              
+              expect(result).to.equal(expectedBackgroundColor);
+              done();
+            }, 400);
           });
 
         });
