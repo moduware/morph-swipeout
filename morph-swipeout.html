@@ -160,8 +160,8 @@
         const morphButtonLeft = this._getMorphButtonElement('left');
 
         // get the background-color of morph-button and assign to its ::after swipe-action extension
-        this.style.setProperty('--swipe-action-after-background-color-right', this._getLastMorphButtonBackgroundColor(morphButtonRight));
-        this.style.setProperty('--swipe-action-after-background-color-left', this._getLastMorphButtonBackgroundColor(morphButtonLeft));
+        this.style.setProperty('--swipe-action-after-background-color-right', this._getElementBackgroundColor(morphButtonRight));
+        this.style.setProperty('--swipe-action-after-background-color-left', this._getElementBackgroundColor(morphButtonLeft));
         
         // tap event to whole body
         this._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
@@ -398,11 +398,11 @@
       * Gets the background-color of morph-button
       * @param {String} buttonPosition - The position of the button being revealed
       */
-      _getLastMorphButtonBackgroundColor(morphButton) {
+      _getElementBackgroundColor(element) {
         if (typeof (ShadyCSS) != 'undefined') {
-          return ShadyCSS.getComputedStyleValue(morphButton, 'background-color');
+          return ShadyCSS.getComputedStyleValue(element, 'background-color');
         } else {
-          return getComputedStyle(morphButton).getPropertyValue('background-color');
+          return getComputedStyle(element).getPropertyValue('background-color');
         }
       }
 

@@ -73,7 +73,7 @@
 
         });
 
-        describe('_getLastMorphButtonBackgroundColor(buttonPosition) for IOS platform', () => {
+        describe('_getElementBackgroundColor(element) for IOS platform', () => {
           let element2;
           beforeEach(function () {
             element2 = fixture('BasicIosTestFixture');
@@ -81,7 +81,7 @@
 
           it('Should return the correct background-color for left morph-button', () => {
             const leftMorphButton = element2._getMorphButtonElement('left');
-            const result = element2._getLastMorphButtonBackgroundColor(leftMorphButton);
+            const result = element2._getElementBackgroundColor(leftMorphButton);
             const styles = window.getComputedStyle(leftMorphButton);
             const expectedBackgroundColor = 'rgb(76, 217, 100)';
 
@@ -90,7 +90,7 @@
 
           it('Should return the correct background-color for right morph-button', () => {
             const rightMorphButton = element2._getMorphButtonElement('right');
-            const result = element2._getLastMorphButtonBackgroundColor(rightMorphButton);
+            const result = element2._getElementBackgroundColor(rightMorphButton);
             const expectedBackgroundColor = 'rgb(255, 59, 48)';
 
             expect(result).to.equal(expectedBackgroundColor);
@@ -99,26 +99,24 @@
         });
 
         // BasicAndroidTestFixture
-        describe('_getLastMorphButtonBackgroundColor(buttonPosition) for Android platform', () => {
-          let element3;
+        describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
+          let element3, result;
           let rightMorphButton;
 
           beforeEach(function (done) {
             element3= fixture('BasicAndroidTestFixture');
             rightMorphButton = element3._getMorphButtonElement('left');
-            done();
-          });
-
-          it('Should return the correct background-color for left morph-button', (done) => {
-            const expectedBackgroundColor = 'rgb(76, 175, 80)';
-
+            // get the background color of morph-button after the 300ms transition timing of translate3d
             setTimeout(function() {
-              let styles = window.getComputedStyle(rightMorphButton);
-              let result = styles.getPropertyValue('background-color');
-              
-              expect(result).to.equal(expectedBackgroundColor);
+              result = element3._getElementBackgroundColor(rightMorphButton);
               done();
             }, 400);
+          });
+
+          it('Should return the correct background-color for left morph-button', () => {
+            const expectedBackgroundColor = 'rgb(76, 175, 80)';
+
+            expect(result).to.equal(expectedBackgroundColor); 
           });
 
         });
