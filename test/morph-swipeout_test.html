@@ -53,6 +53,20 @@
             iosElement = fixture('BasicIosTestFixture');
           });
 
+          it('Should return the correct button from left', () => {
+            const buttonPosition = 'left';
+            const leftMorphButton = iosElement._getMorphButtonElement(buttonPosition);
+
+            expect(leftMorphButton.getAttribute('color')).to.equal('green');
+          });
+
+          it('Should return the correct button from right', () => {
+            const buttonPosition = 'right';
+            const leftMorphButton = iosElement._getMorphButtonElement(buttonPosition);
+
+            expect(leftMorphButton.getAttribute('color')).to.equal('red');
+          });
+
           it('Should return the correct color attribute of left morph-button', () => {
             const buttonPosition = 'left';
             const morphButtonReturnedColorAttribute = iosElement._getMorphButtonElement(buttonPosition).color;
