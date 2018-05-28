@@ -8,8 +8,10 @@
 
     <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>
 
     <link rel="import" href="../morph-swipeout.html">
+    <link rel="import" href="../../polymer/lib/mixins/gesture-event-listeners.html">
     <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
     <link rel="import" href="../../morph-button/morph-button.html">
   </head>
@@ -114,15 +116,15 @@
 
         // BasicAndroidTestFixture
         describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
-          let element3, result;
+          let element, result;
           let rightMorphButton;
 
           beforeEach(function (done) {
-            element3= fixture('BasicAndroidTestFixture');
-            rightMorphButton = element3._getMorphButtonElement('left');
+            element = fixture('BasicAndroidTestFixture');
+            rightMorphButton = element._getMorphButtonElement('left');
             // get the background color of morph-button after the 300ms transition timing of translate3d
             setTimeout(function() {
-              result = element3._getElementBackgroundColor(rightMorphButton);
+              result = element._getElementBackgroundColor(rightMorphButton);
               done();
             }, 400);
           });
@@ -135,6 +137,32 @@
 
         });
 
+        describe('_handleTrack(event) for iOS', () => {
+          let element, functionStub;
+          let mockEvent;
+
+          beforeEach( () => {
+            element = fixture('BasicIosTestFixture');
+          });
+
+          it('Should call _completeOverswipe(direction)', (done) => {
+            let handleTrack = sinon.spy();
+            // var spy = sinon.spy(element, 'handleTrack');
+
+            flush(function() {
+              expect(handleTrack.callCount).to.be.equal(0);
+
+              Polymer.Gestures.addListener('tap', function(event) {
+                console.log('tap fired');
+                expect(handleTrack.callCount).to.be.equal(0);
+                done();
+              });
+
+              MockInteractions.tap(element);
+            });
+            
+          });
+        });
 
       });
 

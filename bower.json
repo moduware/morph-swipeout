@@ -4,7 +4,8 @@
   "main": "morph-swipeout.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "morph-element": "https://github.com/moduware/morph-element.git#master"
+    "morph-element": "https://github.com/moduware/morph-element.git#master",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^2.0.0"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
