@@ -152,13 +152,20 @@
             flush(function() {
               expect(handleTrack.callCount).to.be.equal(0);
 
-              Polymer.Gestures.addListener('tap', function(event) {
-                console.log('tap fired');
+              element.addEventListener('drag', function(event) {
+                console.log('tap fired', topLeft, middleOfNode);
                 expect(handleTrack.callCount).to.be.equal(0);
                 done();
               });
+              let topLeft = MockInteractions.topLeftOfNode(element);
+              let middleOfNode = MockInteractions.middleOfNode(element);
+              var event = new Event('drag');
 
-              MockInteractions.tap(element);
+              element.dispatchEvent(event);
+              // MockInteractions.touchstart(element);
+              MockInteractions.track(element, -20, 22, 10);
+              // MockInteractions.touchend(element);
+              // MockInteractions.tap(element);
             });
             
           });
