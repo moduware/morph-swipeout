@@ -133,6 +133,10 @@
             type: Boolean,
             value: false,
           },
+          /** The amount of pixel swipe to trigger overswipe */
+          overswipeTreshold: {
+            type: Number
+          },
 
           _trackInitialTransform: {
             type: Number
@@ -165,6 +169,8 @@
       ready() {
         super.ready();
         this.$.animationContainer.style.height = this.clientHeight + 'px';
+
+        this.overswipeTreshold = this.offsetWidth / 2;
       }
 
       /**
@@ -285,7 +291,7 @@
           // calculating positive distance (signless)
           const normalizeTransform = Math.abs(newTransform);
           
-          if(this.overswiper && normalizeTransform > this.offsetWidth / 2) {
+          if(this.overswiper && normalizeTransform > this.overswipeTreshold) {
             await this._completeOverswipe(direction);
             await this._handleOverswipe(direction);
             newTransform = 0;
