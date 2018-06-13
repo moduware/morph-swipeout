@@ -59,6 +59,20 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="AndroidTestFixtureOverswiper">
+      <template>
+        <morph-swipeout platform="android" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="android" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button platform="android" color="red" filled big flat>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
     <script>
       describe('morph-swipeout', () => {
 
@@ -258,7 +272,6 @@
 
           }); // Track distance is greater than overswipeTreshold
 
-          //TODO: test that _completeOverswipe and _handleOverswipe are not called when swipe distance is less than overswipeTreshold
           describe('Track distance is less than overswipeTreshold', () => {
             let endEvent;
 
@@ -321,13 +334,153 @@
           
         }); // overswiper for IOS
 
-        // let topLeft = MockInteractions.topLeftOfNode(element);
-        // let middleOfNode = MockInteractions.middleOfNode(element);
+        describe('overswiper for Android', () => {
+          let element;
 
-        // MockInteractions.touchstart(element);
-        // MockInteractions.track(element, -20, 22, 10);
-        // MockInteractions.touchend(element);
-        // MockInteractions.tap(element);
+          beforeEach(() => {
+            element = fixture('AndroidTestFixtureOverswiper');
+          });
+
+          describe('Track distance is greater than overswipeTreshold', () => {
+            let endEvent;
+
+            beforeEach(() => {
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: 600,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach(() => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should call _completeOverswipe', (done) => {
+              flush(function() {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.calledOnce).to.be.true;
+                  done();
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+            it('Should call _handleOverswipe', (done) => {
+              flush(function () {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  flush(() => {
+                    expect(element._handleOverswipe.calledOnce).to.be.true;
+                    done();
+                  });
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+          });
+
+          describe('Track distance is less than overswipeTreshold', () => {
+            let endEvent;
+
+            beforeEach(() => {
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: 200,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach(() => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should NOT call _completeOverswipe', (done) => {
+              flush(() => {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.calledOnce).to.be.false;
+                  done();              
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+
+            });
+
+            it('Should NOT call _handleOverswipe', (done) => {
+              flush(() => {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  flush(() => {
+                    expect(element._handleOverswipe.calledOnce).to.be.false;
+                    done();
+                  });
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+          });
+        }); // overswiper for Android
+        
+        describe.skip('item-delete property for IOS', () => {
+
+        }); // item-delete property for IOS
+
+        describe.skip('item-delete property for Android', () => {
+
+        }); // item-delete property for IOS
+        
+        describe.skip('swipeout-delete property for IOS', () => {
+        
+        }); // swipeout-delete property for IOS
+        
+        describe.skip('swipeout-delete property for Android', () => {
+
+        }); // swipeout-delete property for Android
+        
+        describe.skip('swipeout-prompt-text property for IOS', () => {
+        
+        }); // swipeout-prompt-text property for IOS
+        
+        describe.skip('swipeout-prompt-text property for Android', () => {
+
+        }); // swipeout-prompt-text property for Android
+
 
       }); // morph-swipeout
 
