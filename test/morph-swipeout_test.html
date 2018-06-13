@@ -101,17 +101,17 @@
 
 
 
-        });
+        }); // _getMorphButtonElement()
 
         describe('_getElementBackgroundColor(element) for IOS platform', () => {
-          let element2;
+          let element;
           beforeEach(function () {
-            element2 = fixture('BasicIosTestFixture');
+            element = fixture('BasicIosTestFixture');
           });
 
           it('Should return the correct background-color for left morph-button', () => {
-            const leftMorphButton = element2._getMorphButtonElement('left');
-            const result = element2._getElementBackgroundColor(leftMorphButton);
+            const leftMorphButton = element._getMorphButtonElement('left');
+            const result = element._getElementBackgroundColor(leftMorphButton);
             const styles = window.getComputedStyle(leftMorphButton);
             const expectedBackgroundColor = 'rgb(76, 217, 100)';
 
@@ -119,14 +119,14 @@
           });
 
           it('Should return the correct background-color for right morph-button', () => {
-            const rightMorphButton = element2._getMorphButtonElement('right');
-            const result = element2._getElementBackgroundColor(rightMorphButton);
+            const rightMorphButton = element._getMorphButtonElement('right');
+            const result = element._getElementBackgroundColor(rightMorphButton);
             const expectedBackgroundColor = 'rgb(255, 59, 48)';
 
             expect(result).to.equal(expectedBackgroundColor);
           });
 
-        });
+        }); // _getElementBackgroundColor(element) for IOS platform
 
         // BasicAndroidTestFixture
         describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
@@ -149,7 +149,7 @@
             expect(result).to.equal(expectedBackgroundColor); 
           });
 
-        });
+        }); // _getElementBackgroundColor(buttonPosition) for Android platform
 
         describe('handleTrack(event) for iOS', () => {
           let element, functionStub;
@@ -185,7 +185,7 @@
           });
           
           
-        });
+        }); // handleTrack(event) for iOS
         
         describe('overswiper for IOS', () => {
           let element;
@@ -195,7 +195,7 @@
           });
 
           describe('Track distance is greater than overswipeTreshold', () => {
-            let endEvent, _completeOverswipeStub, _handleOverswipeStub, waitForTranstionEndStub;
+            let endEvent;
 
             beforeEach(() => {
 
@@ -256,34 +256,70 @@
 
             });
 
-          });
+          }); // Track distance is greater than overswipeTreshold
 
           //TODO: test that _completeOverswipe and _handleOverswipe are not called when swipe distance is less than overswipeTreshold
           describe('Track distance is less than overswipeTreshold', () => {
+            let endEvent;
 
-            xit('Should call _completeOverswipe when track distance is less than overswipeTreshold', (done) => {
-              Polymer.Gestures.addListener(element, 'track', e => {
-                expect(element._completeOverswipe.callCount).to.be.equal(0);
-                done();
+            beforeEach(() => {
+
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
               });
-  
-              var endEvent = new CustomEvent('track', {
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
                 detail: {
-                  dx: -201,
+                  dx: 201,
                   state: 'end'
                 }
               });
-  
-              element._trackInitialTransform = 0;
-              element.overswipeTreshold = 500;
-              element.dispatchEvent(endEvent);
             });
 
-          });
+            afterEach( () => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should NOT call _completeOverswipe', (done) => {
+              flush(function() {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.called).to.be.false;
+                  done();
+                });
+    
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+            it('Should NOT call _handleOverswipe', (done) => {
+              flush(function() {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  expect(element._handleOverswipe.called).to.be.false;
+                  done();
+                });
+
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+          }); // Track distance is less than overswipeTreshold
 
 
           
-        });
+        }); // overswiper for IOS
 
         // let topLeft = MockInteractions.topLeftOfNode(element);
         // let middleOfNode = MockInteractions.middleOfNode(element);
@@ -292,7 +328,8 @@
         // MockInteractions.track(element, -20, 22, 10);
         // MockInteractions.touchend(element);
         // MockInteractions.tap(element);
-      });
+
+      }); // morph-swipeout
 
 
 
