@@ -171,10 +171,10 @@
               expect(element.handleTrack.callCount).to.be.equal(0);
 
               Polymer.Gestures.addListener(element, 'track', e => {
-                console.log('Hello track!');
                 expect(element.handleTrack.callCount).to.be.equal(1);
                 done();
               });
+
               var event = new CustomEvent('track', {
                 detail: {dx: 200}
               });
@@ -188,11 +188,103 @@
         });
         
         describe('overswiper for IOS', () => {
-          it('Should call _completeOverswipe when ', () => {});
-          it('Should call _handleOverswipe when', () => {});
+          let element;
+
+          beforeEach( () => {
+            element = fixture('IosTestFixtureOverswiper');
+          });
+
+          describe('Track distance is greater than overswipeTreshold', () => {
+            let endEvent, _completeOverswipeStub, _handleOverswipeStub, waitForTranstionEndStub;
+
+            beforeEach(() => {
+
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: -601,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach(function () {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should call _completeOverswipe', (done) => {
+              flush(function () {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.callCount).to.be.equal(1);
+                  done();
+                });
+                
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+
+              });
+
+            });
+            
+            it('Should call _handleOverswipe', (done) => {
+              flush(function () {
+                Polymer.Gestures.addListener(element, 'track', e => {
+                  flush(function() {
+                    expect(element._handleOverswipe.callCount).to.be.equal(1);
+                    done();
+                  });
+
+                });
+                
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+
+            });
+
+          });
+
+          //TODO: test that _completeOverswipe and _handleOverswipe are not called when swipe distance is less than overswipeTreshold
+          describe('Track distance is less than overswipeTreshold', () => {
+
+            xit('Should call _completeOverswipe when track distance is less than overswipeTreshold', (done) => {
+              Polymer.Gestures.addListener(element, 'track', e => {
+                expect(element._completeOverswipe.callCount).to.be.equal(0);
+                done();
+              });
+  
+              var endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: -201,
+                  state: 'end'
+                }
+              });
+  
+              element._trackInitialTransform = 0;
+              element.overswipeTreshold = 500;
+              element.dispatchEvent(endEvent);
+            });
+
+          });
+
+
           
         });
-        
+
         // let topLeft = MockInteractions.topLeftOfNode(element);
         // let middleOfNode = MockInteractions.middleOfNode(element);
 
