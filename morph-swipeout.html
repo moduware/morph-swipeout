@@ -329,10 +329,9 @@
         const swipeoutPromptText = button.getAttribute('swipeout-prompt-text');
         let confirmed = false;
         if (swipeoutPromptText) {
-          confirmed = await this._confirmDialog(swipeoutPromptText);//confirm(swipeoutPromptText);
-          if (confirmed && button.hasAttribute('swipeout-delete')) {
-            await this._animateDeleteAction(button);
-          }
+          confirmed = await this._confirmDialog(swipeoutPromptText);
+          if (!confirmed) return;
+          if (button.hasAttribute('swipeout-delete')) await this._animateDeleteAction(button);
         } else if (button.hasAttribute('swipeout-delete') || button.hasAttribute('item-delete')) {
           await this._animateDeleteAction(button);
         } else {
