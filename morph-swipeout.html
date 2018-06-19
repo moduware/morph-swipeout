@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/utils/render-status.html">
 <link rel="import" href="../morph-element/morph-element.html">
 <link rel="import" href="../polymer/lib/mixins/gesture-event-listeners.html">
 <link rel="import" href="../polymer/lib/utils/flattened-nodes-observer.html">
@@ -155,9 +156,11 @@
         const morphButtonRight = this._getMorphButtonElement('right');
         const morphButtonLeft = this._getMorphButtonElement('left');
 
-        // get the background-color of morph-button and assign to its ::after swipe-action extension
-        this.style.setProperty('--swipe-action-after-background-color-right', this._getElementBackgroundColor(morphButtonRight));
-        this.style.setProperty('--swipe-action-after-background-color-left', this._getElementBackgroundColor(morphButtonLeft));
+        Polymer.RenderStatus.beforeNextRender(this, function () {
+          // get the background-color of morph-button and assign to its ::after swipe-action extension
+          this.style.setProperty('--swipe-action-after-background-color-right', this._getElementBackgroundColor(morphButtonRight));
+          this.style.setProperty('--swipe-action-after-background-color-left', this._getElementBackgroundColor(morphButtonLeft));
+        });
         
         // tap event to whole body
         this._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
