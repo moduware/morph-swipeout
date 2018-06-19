@@ -73,6 +73,20 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="IosTestFixtureSwipeoutDelete">
+      <template>
+        <morph-swipeout platform="ios" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="ios" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button platform="ios" color="red" filled big flat swipeout-delete>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
     <script>
       describe('morph-swipeout', () => {
 
@@ -456,6 +470,15 @@
 
           });
         }); // overswiper for Android
+
+        // swipeout-delete
+        describe('swipeout-delete property for IOS', () => {
+          it('');
+        }); // swipeout-delete property for IOS
+        
+        describe.skip('swipeout-delete property for Android', () => {
+
+        }); // swipeout-delete property for Android
         
         describe.skip('item-delete property for IOS', () => {
 
@@ -465,13 +488,6 @@
 
         }); // item-delete property for IOS
         
-        describe.skip('swipeout-delete property for IOS', () => {
-        
-        }); // swipeout-delete property for IOS
-        
-        describe.skip('swipeout-delete property for Android', () => {
-
-        }); // swipeout-delete property for Android
         
         describe.skip('swipeout-prompt-text property for IOS', () => {
         
