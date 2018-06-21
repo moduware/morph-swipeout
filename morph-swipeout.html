@@ -21,10 +21,12 @@
 
       :host([platform="ios"]) {
         --swipe-action-after-height: var(--ios-root-container-min-height);
+        --swipeout-container-height: var(--ios-root-container-min-height);
       }
 
       :host([platform="android"]) {
         --swipe-action-after-height: var(--android-root-container-min-height);
+        --swipeout-container-height: var(--android-root-container-min-height);
       }
 
       .root-container:not(.no-transition) {
@@ -161,6 +163,8 @@
           // get the background-color of morph-button and assign to its ::after swipe-action extension
           self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
           self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonRight));
+          this.style.setProperty('--android-root-container-min-height', this.clientHeight + 'px');
+          this.style.setProperty('--ios-root-container-min-height', this.clientHeight + 'px');
           // tap event to whole body
           self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
           morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
@@ -173,7 +177,6 @@
       ready() {
         super.ready();
         this.$.animationContainer.style.height = this.clientHeight + 'px';
-
         this.overswipeTreshold = this.offsetWidth / 2;
       }
 
