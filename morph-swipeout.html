@@ -151,22 +151,23 @@
           this.info = info;
         });
         this._observer.flush();
-        
-        let self = this;
-        const morphButtonRight = this._getMorphButtonElement('right');
-        const morphButtonLeft = this._getMorphButtonElement('left');
 
-        Polymer.RenderStatus.beforeNextRender(this, function () {
+        let self = this;
+        // let morphButtonRightAsync, morphButtonRightAsync;
+
+        (async () => {
+          const morphButtonRight = await self._getMorphButtonElement('right');
+          const morphButtonLeft = await self._getMorphButtonElement('left');
           // get the background-color of morph-button and assign to its ::after swipe-action extension
-          this.style.setProperty('--swipe-action-after-background-color-right', this._getElementBackgroundColor(morphButtonRight));
-          this.style.setProperty('--swipe-action-after-background-color-left', this._getElementBackgroundColor(morphButtonLeft));
-        });
-        
-        // tap event to whole body
-        this._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
-        morphButtonRight.addEventListener('click', event => this._onRightButtonClick(event));
-        morphButtonLeft.addEventListener('click', event => this._onLeftButtonClick(event));
-        Polymer.Gestures.addListener(this, 'track', e => this.handleTrack(e));
+          self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
+          self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonRight));
+          // tap event to whole body
+          self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
+          morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
+          morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
+          Polymer.Gestures.addListener(self, 'track', e => self.handleTrack(e));
+        })();
+
       }
 
       ready() {
@@ -328,7 +329,7 @@
 
       async _handleOverswipe(direction) {
         const buttonPosition = direction == 'left' ? 'right' : 'left';
-        const button = this._getMorphButtonElement(buttonPosition);
+        const button = await this._getMorphButtonElement(buttonPosition);
         const swipeoutPromptText = button.getAttribute('swipeout-prompt-text');
         let confirmed = false;
         if (swipeoutPromptText) {
@@ -405,14 +406,25 @@
           return getComputedStyle(element).getPropertyValue('background-color');
         }
       }
+      
+
+      /**
+      * Gets the element nodes after a set delay
+      * @param {Number} delay - The delay in milliseconds
+      */
+      async _getNodeElements(delay) {
+        await this._sleep(delay);
+        const nodes = this.info.addedNodes;
+        return nodes;
+      }
 
       /**
       * Gets the morph-button element being revealed
       * @param {String} buttonPosition - The position of the button being revealed
       */
-      _getMorphButtonElement(buttonPosition) {
+      async _getMorphButtonElement(buttonPosition) {
         let items, lastButton;
-        const nodes = this.info.addedNodes;
+        const nodes = await this._getNodeElements(400);
 
         for (var i = 0; i < nodes.length; i++) {
           if (nodes[i].nodeName != "#text" && nodes[i].nodeName != "#comment") {
