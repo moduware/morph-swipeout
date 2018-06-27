@@ -20,11 +20,13 @@
       }
 
       :host([platform="ios"]) {
+        --morph-swipeout-client-height: var(--ios-root-container-min-height);
         --swipe-action-after-height: var(--ios-root-container-min-height);
         --swipeout-container-height: var(--ios-root-container-min-height);
       }
 
       :host([platform="android"]) {
+        --morph-swipeout-client-height: var(--android-root-container-min-height);
         --swipe-action-after-height: var(--android-root-container-min-height);
         --swipeout-container-height: var(--android-root-container-min-height);
       }
@@ -36,6 +38,7 @@
 
       .animation-container {
         transition: height 0.4s linear;
+        overflow: hidden;
       }
 
       .animation-container.disappear-animation {
@@ -78,7 +81,7 @@
         position: absolute;
         top: 0;
         width: 600%;
-        height: var(--swipe-action-after-height);
+        height: var(--swipeout-container-height, --swipe-action-after-height);
         
         z-index: -1;
         transform: translate3d(0,0,0);
@@ -163,8 +166,7 @@
           // get the background-color of morph-button and assign to its ::after swipe-action extension
           self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
           self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonRight));
-          this.style.setProperty('--android-root-container-min-height', this.clientHeight + 'px');
-          this.style.setProperty('--ios-root-container-min-height', this.clientHeight + 'px');
+          this.style.setProperty('--swipeout-container-height', this.clientHeight + 'px');
           // tap event to whole body
           self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
           morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
