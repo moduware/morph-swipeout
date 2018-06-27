@@ -31,6 +31,12 @@
         morph-swipeout {
           --back-container-background-color:lightgray;
         }
+
+        morph-button {
+          height: var(--swipeout-container-height);
+          display: flex;
+          align-items: center;
+        }
       </style>
     </custom-style>
   </head>
@@ -43,13 +49,13 @@
           <morph-swipeout overswiper>
 
             <span slot="left-buttons">
-              <morph-button id="leftLastButton" color="red" filled big flat swipeout-delete>Delete</morph-button>
+              <morph-button id="leftLastButton" color="red" filled flat swipeout-delete>Delete</morph-button>
             </span>
 
             Swipeout content 
 
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled big flat item-delete swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
             </span>
 
           </morph-swipeout>
@@ -57,13 +63,20 @@
           <morph-swipeout>
 
             <span slot="left-buttons">
-              <morph-button id="leftLastButton" color="green" filled big flat>Action</morph-button>
+              <morph-button id="leftLastButton" color="green" filled flat>Action</morph-button>
             </span>
 
-            Swipeout content 
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
+            <p>Swipeout content</p>
 
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled big flat item-delete>Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
             </span>
 
           </morph-swipeout>
@@ -71,26 +84,26 @@
           <morph-swipeout overswiper>
 
             <span slot="left-buttons">
-              <morph-button id="leftLastButton" color="red" filled big flat item-delete swipeout-delete swipeout-prompt-text="Oh, Are you sure you want to delete this item?">Delete</morph-button>
+              <morph-button id="leftLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Oh, Are you sure you want to delete this item?">Delete</morph-button>
             </span>
 
             Swipeout content 
 
             <span slot="right-buttons">
-              <morph-button id="rightLastButton" color="red" filled big flat item-delete swipeout-delete>Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled flat item-delete swipeout-delete>Delete</morph-button>
             </span>
 
           </morph-swipeout>
 
           <morph-swipeout overswiper>
             <span slot="left-buttons">
-              <morph-button id="leftLastButton" color="red" filled big flat item-delete>Delete</morph-button>
+              <morph-button id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
             </span>
             
             Swipeout content
             
             <span slot="right-buttons">
-              <morph-button id="rightLastButton" color="red" filled big flat item-delete>Delete</morph-button>
+              <morph-button id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
             </span>
           </morph-swipeout>
 
