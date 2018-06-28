@@ -33,10 +33,17 @@
         }
 
         morph-button {
-          height: var(--swipeout-container-height);
-          display: flex;
-          align-items: center;
+          /* height: var(--swipeout-container-height); */
+          /* display: flex;
+          align-items: center; */
         }
+
+        /* .swiper-integration-class {
+          background: blue;
+          height: 100%;
+        } */
+
+
       </style>
     </custom-style>
   </head>
@@ -67,9 +74,17 @@
             </span>
 
             Swipeout content
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
+            <p>A paragraph text</p>
 
             <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
             </span>
 
           </morph-swipeout>

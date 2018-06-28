@@ -31,6 +31,11 @@
         --swipeout-container-height: var(--android-root-container-min-height);
       }
 
+      .root-container {
+        display: flex;
+        justify-content: stretch;
+      }
+
       .root-container:not(.no-transition) {
         transition: transform 300ms;
         /* transform: translateX(-40px); */
@@ -57,6 +62,8 @@
       .left-buttons-container,
       .right-buttons-container {
         position: absolute;
+        display: flex;
+        height: 100%;
         top: 50%;
       }
 
@@ -80,8 +87,8 @@
         content: '';
         position: absolute;
         top: 0;
+        height: 100%;
         width: 600%;
-        height: var(--swipeout-container-height, --swipe-action-after-height);
         
         z-index: -1;
         transform: translate3d(0,0,0);
@@ -165,14 +172,14 @@
           const morphButtonLeft = await self._getMorphButtonElement('left');
           // get the background-color of morph-button and assign to its ::after swipe-action extension
           self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
-          self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonRight));
-          this.style.setProperty('--swipeout-container-height', this.clientHeight + 'px');
-          this.$.animationContainer.style.height = this.clientHeight + 'px';
+          self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonLeft));
+          // this.$.animationContainer.style.height = this.clientHeight + 'px';
           // tap event to whole body
           self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
           morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
           morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
           Polymer.Gestures.addListener(self, 'track', e => self.handleTrack(e));
+          Polymer.Gestures.setTouchAction(this, 'pan-y');
         })();
 
       }
@@ -232,9 +239,20 @@
       * @param {Object} button - Element animate and delete
       */
       async _animateDeleteAction(button) {
+        this.$.animationContainer.style.height = this.clientHeight + 'px';
+        await this.waitNextFrame();
         this.$.animationContainer.style.height = '0px';
         await this.waitForTranstionEnd(this.$.animationContainer, 'height');
         this.parentNode.removeChild(this);
+      }
+      
+      /**
+      * Async function to force to do repaint of frame before going to the next line of js code
+      */
+      waitNextFrame() {
+        return new Promise((resolve, reject) => {
+          requestAnimationFrame((timestamp) => resolve(timestamp));
+        });
       }
 
       /**
