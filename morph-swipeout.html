@@ -170,14 +170,17 @@
         (async () => {
           const morphButtonRight = await self._getMorphButtonElement('right');
           const morphButtonLeft = await self._getMorphButtonElement('left');
+          this.noLeftButton = typeof morphButtonLeft === 'undefined';
+          console.log('this.noLeftButton', this.noLeftButton);
+          
           // get the background-color of morph-button and assign to its ::after swipe-action extension
-          self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
-          self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonLeft));
+          if (morphButtonRight) self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
+          if(morphButtonLeft) self.style.setProperty('--swipe-action-after-background-color-left', self._getElementBackgroundColor(morphButtonLeft));
           // this.$.animationContainer.style.height = this.clientHeight + 'px';
           // tap event to whole body
           self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
-          morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
-          morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
+          if (morphButtonRight) morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
+          if(morphButtonLeft) morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
           Polymer.Gestures.addListener(self, 'track', e => self.handleTrack(e));
           Polymer.Gestures.setTouchAction(this, 'pan-y');
         })();
@@ -293,10 +296,17 @@
       async handleTrack(event) {
         let distance = event.detail.dx;
 
-        // if track distance is just lesst then +/- 10 it will not start the swiping action
-        if(distance > -10 && distance < 10) {
+        // if track distance is just lesst then +/- 7 it will not start the swiping action
+        if(distance > -7 && distance < 7) {
           return;
         }
+
+        if(this.noLeftButton) {
+          if(distance > 0) {
+            return;
+          }
+        }
+
 
         /* START ACTIONS */
         if(event.detail.state == 'start') {
