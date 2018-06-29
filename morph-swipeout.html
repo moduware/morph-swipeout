@@ -293,6 +293,11 @@
       async handleTrack(event) {
         let distance = event.detail.dx;
 
+        // if track distance is just lesst then +/- 10 it will not start the swiping action
+        if(distance > -10 && distance < 10) {
+          return;
+        }
+
         /* START ACTIONS */
         if(event.detail.state == 'start') {
           this._trackInitialTransform = this._getTransformTranslateX(this.$.rootContainer);
@@ -330,7 +335,7 @@
             newTransform = 0;
           }
         }
-        // Shared code: this is done after every tracking event 
+        // Shared code: this is done after every tracking event
         this.$.rootContainer.style.transform = `translateX(${newTransform}px)`;
       }
 
