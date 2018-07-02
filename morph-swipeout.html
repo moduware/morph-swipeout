@@ -82,8 +82,8 @@
         position: relative;
       }
 
-      :host .left-buttons-container ::slotted([slot="left-buttons"])::after,
-      :host .right-buttons-container ::slotted([slot="right-buttons"])::after {
+      :host .left-buttons-container::after,
+      :host .right-buttons-container::after {
         content: '';
         position: absolute;
         top: 0;
@@ -94,13 +94,13 @@
         transform: translate3d(0,0,0);
       }
 
-      :host .right-buttons-container ::slotted([slot="right-buttons"])::after {
+      :host .right-buttons-container::after {
         background-color: var(--swipe-action-after-background-color-right);
         left: 100%;
         margin-left: -1px;
       }
 
-      :host .left-buttons-container ::slotted([slot="left-buttons"])::after {
+      :host .left-buttons-container::after {
         background-color: var(--swipe-action-after-background-color-left, #fff);
         right: 100%;
         margin-right: -1px;
@@ -171,7 +171,6 @@
           const morphButtonRight = await self._getMorphButtonElement('right');
           const morphButtonLeft = await self._getMorphButtonElement('left');
           this.noLeftButton = typeof morphButtonLeft === 'undefined';
-          console.log('this.noLeftButton', this.noLeftButton);
           
           // get the background-color of morph-button and assign to its ::after swipe-action extension
           if (morphButtonRight) self.style.setProperty('--swipe-action-after-background-color-right', self._getElementBackgroundColor(morphButtonRight));
@@ -295,18 +294,18 @@
       */
       async handleTrack(event) {
         let distance = event.detail.dx;
-
-        // if track distance is just lesst then +/- 7 it will not start the swiping action
-        if(distance > -7 && distance < 7) {
+  
+        //if track distance is just lesst then +/- 10 it will not start the swiping action
+        if (Math.abs(distance) < 10) {
           return;
         }
 
+        // cancels tracking if there are no left buttons
         if(this.noLeftButton) {
           if(distance > 0) {
             return;
           }
         }
-
 
         /* START ACTIONS */
         if(event.detail.state == 'start') {
@@ -345,6 +344,7 @@
             newTransform = 0;
           }
         }
+        
         // Shared code: this is done after every tracking event
         this.$.rootContainer.style.transform = `translateX(${newTransform}px)`;
       }
