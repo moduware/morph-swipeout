@@ -8,8 +8,6 @@
   <template>
     <style>
       :host {
-        --ios-root-container-min-height: 44px;
-        --android-root-container-min-height: 48px;
         --swipe-action-after-background-color-right: yellow;
         --swipe-action-after-background-color-left: yellow;
 
@@ -19,18 +17,6 @@
         background-color: var(--back-container-background-color, #fff);
       }
 
-      :host([platform="ios"]) {
-        --morph-swipeout-client-height: var(--ios-root-container-min-height);
-        --swipe-action-after-height: var(--ios-root-container-min-height);
-        --swipeout-container-height: var(--ios-root-container-min-height);
-      }
-
-      :host([platform="android"]) {
-        --morph-swipeout-client-height: var(--android-root-container-min-height);
-        --swipe-action-after-height: var(--android-root-container-min-height);
-        --swipeout-container-height: var(--android-root-container-min-height);
-      }
-
       .root-container {
         display: flex;
         justify-content: stretch;
@@ -38,7 +24,6 @@
 
       .root-container:not(.no-transition) {
         transition: transform 300ms;
-        /* transform: translateX(-40px); */
       }
 
       .animation-container {
@@ -47,16 +32,7 @@
       }
 
       .animation-container.disappear-animation {
-        /* min-height: auto; */
         height: 0 !important;
-      }
-
-      :host([platform="ios"]) .root-container {
-        min-height: var(--ios-root-container-min-height);
-      }
-
-      :host([platform="android"]) .root-container {
-        min-height: var(--android-root-container-min-height);
       }
 
       .left-buttons-container,
