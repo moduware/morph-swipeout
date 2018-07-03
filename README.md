@@ -68,6 +68,7 @@ For the information about how to clone the desired repository, running the local
 |   **`color`**        | Boolean | `morph-button` property used to set button color - REQUIRED                     |
 |   **`flat`**         | Boolean | `morph-button` property used to get flat corners - REQUIRED                     |
 |   **`filled`**       | Boolean | `morph-button` property used to get white text on colored background - REQUIRED |
+|   **`item-delete`**  | Boolean | `morph-button` property used to delete item when button is clicked              |
 
 
 ## Overswiper `morph-swipeout` markup with swipeout-delete
