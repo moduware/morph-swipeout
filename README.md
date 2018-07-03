@@ -22,12 +22,14 @@ For the information about how to clone the desired repository, running the local
     Swipeout content 
 
     <span slot="right-buttons">
-      <morph-button color="red" filled flat>Delete</morph-button>
+      <morph-button class="swiper-integration-class" color="red" filled flat>Delete</morph-button>
     </span>
 
   </morph-swipeout>
 
   ```
+
+- IMPORTANT: `class="swiper-integration-class"` required to be added on the `morph-button` class for the button to render properly  
 
 - The `<span slot="left-buttons">` for the left action button is optional. The `<span slot="right-buttons">` for the right action button is required for there is no point in having overswipe when there is no action button to show
 
@@ -46,7 +48,7 @@ For the information about how to clone the desired repository, running the local
     </div>
 
     <span slot="right-buttons">
-      <morph-button color="red" filled flat item-delete>Delete</morph-button>
+      <morph-button class="swiper-integration-class" color="red" filled flat item-delete>Delete</morph-button>
     </span>
 
   </morph-swipeout>
@@ -84,7 +86,7 @@ For the information about how to clone the desired repository, running the local
     </div>
 
     <span slot="right-buttons">
-      <morph-button color="red" filled flat swipeout-delete>Delete</morph-button>
+      <morph-button class="swiper-integration-class" color="red" filled flat swipeout-delete>Delete</morph-button>
     </span>
 
   </morph-swipeout>
@@ -115,7 +117,7 @@ For the information about how to clone the desired repository, running the local
     </div>
 
     <span slot="right-buttons">
-      <morph-button color="red" filled flat swipeout-delete swipeout-prompt-text="Do you to delete item?">Delete</morph-button>
+      <morph-button class="swiper-integration-class" color="red" filled flat swipeout-delete swipeout-prompt-text="Do you to delete item?">Delete</morph-button>
     </span>
 
   </morph-swipeout>
