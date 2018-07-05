@@ -219,6 +219,7 @@
       async _animateDeleteAction(button) {
         this.$.animationContainer.style.height = this.clientHeight + 'px';
         await this.waitNextFrame();
+        await this._sleep(0);
         this.$.animationContainer.style.height = '0px';
         await this.waitForTranstionEnd(this.$.animationContainer, 'height');
         this.parentNode.removeChild(this);
