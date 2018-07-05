@@ -17,11 +17,19 @@
   </head>
   <body>
 
+    <!-- TODO: update fixture markup to include swiper-integration-class to morph-button class -->
+    <!-- TODO: create fixture for swipeout-delete property for IOS -->
+    <!-- TODO: create fixture for swipeout-delete property for Android -->
+    <!-- TODO: create fixture for item-delete property for IOS -->
+    <!-- TODO: create fixture for item-delete property for IOS -->
+    <!-- TODO: create fixture for swipeout-prompt-text property for IOS -->
+    <!-- TODO: create fixture for swipeout-prompt-text property for Android -->
+
     <test-fixture id="BasicIosTestFixture">
       <template>
         <morph-swipeout platform="ios">
           <span slot="left-buttons">
-            <morph-button platform="ios" color="green" filled big flat>Action</morph-button>
+            <morph-button class="swiper-integration-class" platform="ios" color="green" filled big flat>Action</morph-button>
           </span>
           Swipeout content
           <span slot="right-buttons">
@@ -97,34 +105,36 @@
             iosElement = fixture('BasicIosTestFixture');
           });
 
-          it('Should return the correct button from left', () => {
+          it('Should return the correct button from left', async () => {
             const buttonPosition = 'left';
-            const leftMorphButton = iosElement._getMorphButtonElement(buttonPosition);
-
-            expect(leftMorphButton.getAttribute('color')).to.equal('green');
+            const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedInnerHTMLOfMorphButton = 'Action';
+            
+            expect(leftMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
           });
 
-          it('Should return the correct button from right', () => {
+          it('Should return the correct button from right', async () => {
             const buttonPosition = 'right';
-            const leftMorphButton = iosElement._getMorphButtonElement(buttonPosition);
+            const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedInnerHTMLOfMorphButton = 'Delete';
 
-            expect(leftMorphButton.getAttribute('color')).to.equal('red');
+            expect(rightMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
           });
 
-          it('Should return the correct color attribute of left morph-button', () => {
+          it('Should return the correct color attribute of left morph-button', async () => {
             const buttonPosition = 'left';
-            const morphButtonReturnedColorAttribute = iosElement._getMorphButtonElement(buttonPosition).color;
+            const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
             const expectedColorAttributeOfMorphButton = 'green';
             
-            expect(morphButtonReturnedColorAttribute).to.be.equal(expectedColorAttributeOfMorphButton);
+            expect(leftMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
           });
 
-          it('Should return the correct color attribute of right morph-button', () => {
+          it('Should return the correct color attribute of right morph-button', async () => {
             const buttonPosition = 'right';
-            const morphButtonReturnedColorAttribute = iosElement._getMorphButtonElement(buttonPosition).color;
+            const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
             const expectedColorAttributeOfMorphButton = 'red';
 
-            expect(morphButtonReturnedColorAttribute).to.be.equal(expectedColorAttributeOfMorphButton);
+            expect(rightMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
           });
 
 
@@ -133,12 +143,13 @@
 
         describe('_getElementBackgroundColor(element) for IOS platform', () => {
           let element;
+
           beforeEach(function () {
             element = fixture('BasicIosTestFixture');
           });
 
-          it('Should return the correct background-color for left morph-button', () => {
-            const leftMorphButton = element._getMorphButtonElement('left');
+          it('Should return the correct background-color for left morph-button', async () => {
+            const leftMorphButton = await element._getMorphButtonElement('left');
             const result = element._getElementBackgroundColor(leftMorphButton);
             const styles = window.getComputedStyle(leftMorphButton);
             const expectedBackgroundColor = 'rgb(76, 217, 100)';
@@ -146,8 +157,8 @@
             expect(result).to.equal(expectedBackgroundColor);
           });
 
-          it('Should return the correct background-color for right morph-button', () => {
-            const rightMorphButton = element._getMorphButtonElement('right');
+          it('Should return the correct background-color for right morph-button', async () => {
+            const rightMorphButton = await element._getMorphButtonElement('right');
             const result = element._getElementBackgroundColor(rightMorphButton);
             const expectedBackgroundColor = 'rgb(255, 59, 48)';
 
@@ -158,27 +169,24 @@
 
         // BasicAndroidTestFixture
         describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
-          let element, result;
-          let rightMorphButton;
+          let element;
 
-          beforeEach(function (done) {
+          beforeEach(function () {
             element = fixture('BasicAndroidTestFixture');
-            rightMorphButton = element._getMorphButtonElement('left');
-            // get the background color of morph-button after the 300ms transition timing of translate3d
-            setTimeout(function() {
-              result = element._getElementBackgroundColor(rightMorphButton);
-              done();
-            }, 400);
           });
 
-          it('Should return the correct background-color for left morph-button', () => {
+          it('Should return the correct background-color for left morph-button', async () => {
+            const rightMorphButton = await element._getMorphButtonElement('left');
+            const result = element._getElementBackgroundColor(rightMorphButton);
             const expectedBackgroundColor = 'rgb(76, 175, 80)';
 
-            expect(result).to.equal(expectedBackgroundColor); 
+            expect(result).to.equal(expectedBackgroundColor);
           });
 
         }); // _getElementBackgroundColor(buttonPosition) for Android platform
+        
 
+        // TODO: FIX TEST FROM THIS LINE ONWARDS
         describe('handleTrack(event) for iOS', () => {
           let element, functionStub;
           let mockEvent;
