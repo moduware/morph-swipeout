@@ -95,7 +95,7 @@
       </template>
     </test-fixture>
 
-    <test-fixture id="androidTestFixtureSwipeoutDelete">
+    <test-fixture id="AndroidTestFixtureSwipeoutDelete">
       <template>
         <morph-swipeout platform="android" overswiper>
           <span slot="left-buttons">
@@ -104,6 +104,34 @@
           Swipeout content
           <span slot="right-buttons">
             <morph-button class="swiper-integration-class" platform="android" color="red" filled big flat swipeout-delete>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="IosTestFixtureItemDelete">
+      <template>
+        <morph-swipeout platform="ios" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="ios" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button class="swiper-integration-class" platform="ios" color="red" filled big flat item-delete>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="AndroidTestFixtureItemDelete">
+      <template>
+        <morph-swipeout platform="android" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="android" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button class="swiper-integration-class" platform="android" color="red" filled big flat item-delete>Delete</morph-button>
           </span>
         </morph-swipeout>
       </template>
@@ -518,19 +546,19 @@
 
           });
 
-          it('Should have morph-button with swipeout-delete attribute', async () => {
+          it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
             await element._handleOverswipe();
             expect(element._animateDeleteAction.callCount).to.be.equal(1);
           });
         }); // swipeout-delete property for IOS
 
 
-        describe.only('swipeout-delete property for Android', () => {
+        describe('swipeout-delete property for Android', () => {
           
           let element, buttonElement;
 
           beforeEach(async () => {
-            element = fixture('androidTestFixtureSwipeoutDelete');
+            element = fixture('AndroidTestFixtureSwipeoutDelete');
             buttonElement = await element._getMorphButtonElement('right');
 
             stub('morph-swipeout', {
@@ -547,18 +575,65 @@
 
           });
 
-          it('Should have morph-button with swipeout-delete attribute', async () => {
+          it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
             await element._handleOverswipe();
             expect(element._animateDeleteAction.callCount).to.be.equal(1);
           });
         }); // swipeout-delete property for Android
         
-        describe.skip('item-delete property for IOS', () => {
+        describe('item-delete property for IOS', () => {
+          let element, buttonElement;
 
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureItemDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
         }); // item-delete property for IOS
 
-        describe.skip('item-delete property for Android', () => {
+        describe('item-delete property for Android', () => {
+          AndroidTestFixtureItemDelete
+          let element, buttonElement;
 
+          beforeEach(async () => {
+            element = fixture('AndroidTestFixtureItemDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
         }); // item-delete property for IOS
         
         
