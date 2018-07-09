@@ -143,6 +143,9 @@
         let self = this;
         // let morphButtonRightAsync, morphButtonRightAsync;
 
+        Polymer.Gestures.addListener(self, 'track', e => self.handleTrack(e));
+        Polymer.Gestures.setTouchAction(this, 'pan-y');
+
         (async () => {
           const morphButtonRight = await self._getMorphButtonElement('right');
           const morphButtonLeft = await self._getMorphButtonElement('left');
@@ -156,8 +159,6 @@
           self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
           if (morphButtonRight) morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
           if(morphButtonLeft) morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
-          Polymer.Gestures.addListener(self, 'track', e => self.handleTrack(e));
-          Polymer.Gestures.setTouchAction(this, 'pan-y');
         })();
 
       }
