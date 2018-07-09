@@ -137,6 +137,20 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="IosTestFixtureSwipeoutPromptText">
+      <template>
+        <morph-swipeout platform="ios" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="ios" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button class="swiper-integration-class" platform="ios" color="red" filled big flat swipeout-delete swipeout-prompt-text="Do you want to delete?">Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
     <script>
       describe('morph-swipeout', () => {
 
@@ -637,8 +651,51 @@
         }); // item-delete property for IOS
         
         
-        describe.skip('swipeout-prompt-text property for IOS', () => {
-        
+        describe.only('swipeout-prompt-text property for IOS', () => {
+          let element;
+
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureSwipeoutPromptText');
+
+            buttonElement = await element._getMorphButtonElement('right');
+            
+            stub('morph-swipeout', {
+              _confirmDialog: async function () {
+                return true;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+          });
+
+          it('Should have text', () => {
+            expect(buttonElement.hasAttribute('swipeout-prompt-text')).to.be.true;
+          });
+
+          it('Should have text', () => {
+            let promptTExt = buttonElement.getAttribute('swipeout-prompt-text');
+            let expected = 'Do you want to delete?';
+
+            expect(promptTExt).to.be.equal(expected);
+          });
+
+          it('Should call _animateDeleteAction when confirm is true and swipe-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+
+
         }); // swipeout-prompt-text property for IOS
         
         describe.skip('swipeout-prompt-text property for Android', () => {
