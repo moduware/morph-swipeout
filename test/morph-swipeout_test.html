@@ -89,7 +89,21 @@
           </span>
           Swipeout content
           <span slot="right-buttons">
-            <morph-button platform="ios" color="red" filled big flat swipeout-delete>Delete</morph-button>
+            <morph-button class="swiper-integration-class" platform="ios" color="red" filled big flat swipeout-delete>Delete</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="androidTestFixtureSwipeoutDelete">
+      <template>
+        <morph-swipeout platform="android" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="android" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button class="swiper-integration-class" platform="android" color="red" filled big flat swipeout-delete>Delete</morph-button>
           </span>
         </morph-swipeout>
       </template>
@@ -201,11 +215,14 @@
             });
           });
 
-          it('Should call handleTrack when track event is fired', (done) => {
+          afterEach(function () {
+            element.handleTrack.restore();
+          });
 
+          it('Should call handleTrack when track event is fired', (done) => {
             flush(function() {
               expect(element.handleTrack.callCount).to.be.equal(0);
-
+              
               Polymer.Gestures.addListener(element, 'track', e => {
                 expect(element.handleTrack.callCount).to.be.equal(1);
                 done();
@@ -481,11 +498,59 @@
 
         // swipeout-delete
         describe('swipeout-delete property for IOS', () => {
-          it('');
-        }); // swipeout-delete property for IOS
-        
-        describe.skip('swipeout-delete property for Android', () => {
+          let element, buttonElement;
 
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureSwipeoutDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should have morph-button with swipeout-delete attribute', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // swipeout-delete property for IOS
+
+
+        describe.only('swipeout-delete property for Android', () => {
+          
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('androidTestFixtureSwipeoutDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should have morph-button with swipeout-delete attribute', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
         }); // swipeout-delete property for Android
         
         describe.skip('item-delete property for IOS', () => {
