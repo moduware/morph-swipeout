@@ -1,9 +1,12 @@
 # morph-swipeout
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/PolymerElements/paper-progress)
+
 Component to allow swipeout of content by use that will reveal additional actions that don't take screen space normally
 
 ## Getting Started
 
-For the information about how to clone the desired repository, running the local server and testing, please refer to this [link](https://github.com/moduware/polymorph-components/blob/master/INFO.md).
+For the information about how to clone the desired repository, running the local server and testing, please refer to Polymorph elements getting started docs at the end of this repository.
 
 ## Demo
 
@@ -92,7 +95,8 @@ For the information about how to clone the desired repository, running the local
   </morph-swipeout>
 
   ```
-### Attributes for `morph-swipeout` Overswiper
+  
+## Attributes for `morph-swipeout` Overswiper
 
 |  `morph-swipeout` Attribute  |   Type  | Description                                              |
 |:----------------------------:|:-------:|----------------------------------------------------------|
@@ -146,3 +150,10 @@ Custom property                               | Description                     
 `--back-container-background-color`           | Background color for back container property                                     | #fff       |
 `--swipe-action-after-background-color-left`  | To help get the left morph-button background-color swipe action psuedo element   | yellow     |
 `--swipe-action-after-background-color-right` | To help get the right morph-button background-color swipe action psuedo element  | yellow     |
+
+
+## Further help
+
+For more information on how to install and run test please go here - [Polymorph elements getting started]
+
+[Polymorph elements getting started]: https://github.com/moduware/polymorph-components/blob/master/INFO.md
