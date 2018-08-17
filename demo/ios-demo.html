@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>morph-swipeout demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
+  <link rel="import" href="../../morph-button/morph-button.html">
+  <link rel="import" href="../../morph-list-view/morph-list-view.html">
+  <link rel="import" href="../../morph-list-view-item/morph-list-view-item.html">
+  <link rel="import" href="../morph-swipeout.html">
+
+  <custom-style>
+    <style is="custom-style" include="demo-pages-shared-styles">
+      demo-snippet {
+        --demo-snippet-demo: {
+          background-color: #eff0f4;
+          padding-left: 0;
+          padding-right: 0;
+          padding-top: 20px;
+          padding-bottom: 20px;
+        }
+      }
+
+      morph-swipeout {
+        --back-container-background-color: lightgray;
+      }
+
+      div.slot-content-div {
+        min-height: 44px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+      }
+    </style>
+  </custom-style>
+</head>
+
+<body>
+  <div class="vertical-section-container centered">
+    <h3>morph-swipeout IOS demo</h3>
+    <demo-snippet>
+      <template>
+
+        <morph-swipeout platform="ios" overswiper>
+
+          <span slot="left-buttons">
+            <morph-button platform="ios" class="swiper-integration-class" id="leftLastButton" color="red" filled flat swipeout-delete>Delete</morph-button>
+          </span>
+
+          <div class="slot-content-div">
+            <p>Overswipe with Prompt</p>
+          </div>
+
+          <span slot="right-buttons" on-click="buttonClickHandler">
+            <morph-button platform="ios" class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
+          </span>
+
+        </morph-swipeout>
+
+        <morph-swipeout platform="ios">
+
+          <span slot="left-buttons">
+            <morph-button class="swiper-integration-class" id="leftLastButton" color="green" filled flat>Action</morph-button>
+          </span>
+
+          <div class="slot-content-div">
+            <p>Swipe left to reveal action or swipe right to reveal click to delete item.</p>
+          </div>
+
+          <span slot="right-buttons" on-click="buttonClickHandler">
+            <morph-button platform="ios" class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+          </span>
+
+        </morph-swipeout>
+
+        <morph-swipeout platform="ios" overswiper>
+
+          <span slot="left-buttons">
+            <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Oh, Are you sure you want to delete this item?">Delete</morph-button>
+          </span>
+
+          <div class="slot-content-div">
+            <p>Overswipe left with prompt and overswipe right to delete.</p>
+          </div>
+
+          <span slot="right-buttons">
+            <morph-button platform="ios" class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete>Delete</morph-button>
+          </span>
+
+        </morph-swipeout>
+
+      </template>
+    </demo-snippet>
+  </div>
+</body>
+
+</html>
