@@ -6,169 +6,192 @@
 
     <title>morph-swipeout demo</title>
 
-    <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 
-    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../../morph-shared-colors/morph-shared-colors.html">
-    <link rel="import" href="../../morph-button/morph-button.html">
-    <link rel="import" href="../../morph-list-view/morph-list-view.html">
-    <link rel="import" href="../../morph-list-view-item/morph-list-view-item.html">
-    <link rel="import" href="../morph-swipeout.html">
+    <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+    <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-snippet.js"></script>
+    <script type="module" src="../node_modules/morph-shared-colors/morph-shared-colors.js"></script>
+    <script type="module" src="../node_modules/morph-button/morph-button.js"></script>
+    <script type="module" src="../node_modules/morph-list-view/morph-list-view.js"></script>
+    <script type="module" src="../node_modules/morph-list-view-item/morph-list-view-item.js"></script>
+    <script type="module" src="../morph-swipeout.js"></script>
 
-    <custom-style>
-      <style is="custom-style" include="demo-pages-shared-styles">
-        demo-snippet {
-          --demo-snippet-demo: {
-            background-color: #eff0f4;
-            padding-left: 0;
-            padding-right: 0;
-            padding-top: 20px;
-            padding-bottom: 20px;
+    <!-- FIXME(polymer-modulizer):
+        These imperative modules that innerHTML your HTML are
+        a hacky way to be sure that any mixins in included style
+        modules are ready before any elements that reference them are
+        instantiated, otherwise the CSS @apply mixin polyfill won't be
+        able to expand the underlying CSS custom properties.
+        See: https://github.com/Polymer/polymer-modulizer/issues/154
+        -->
+    <script type="module">
+      var $_documentContainer = document.createElement('template');
+
+      $_documentContainer.innerHTML = /*html*/`
+      <custom-style>
+        <style is="custom-style" include="demo-pages-shared-styles">
+          demo-snippet {
+            --demo-snippet-demo: {
+              background-color: #eff0f4;
+              padding-left: 0;
+              padding-right: 0;
+              padding-top: 20px;
+              padding-bottom: 20px;
+            }
           }
-        }
 
-        morph-swipeout {
-          --back-container-background-color:lightgray;
-        }
+          morph-swipeout {
+            --back-container-background-color:lightgray;
+          }
 
-        div.slot-content-div {
-          min-height: 44px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          flex-grow: 1;
-        }
+          div.slot-content-div {
+            min-height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+          }
 
-      </style>
-    </custom-style>
+        </style>
+      </custom-style>`;
+
+      document.body.appendChild($_documentContainer.content);
+    </script>
   </head>
   <body>
-    <div class="vertical-section-container centered">
-      <h3>Basic morph-swipeout demo</h3>
-      <demo-snippet>
-        <template>
+    <script type="module">
+      var $_documentContainer = document.createElement('template');
 
-          <morph-swipeout overswiper>
+      $_documentContainer.innerHTML = /*html*/`
+      <div class="vertical-section-container centered">
+        <h3>Basic morph-swipeout demo</h3>
+        <demo-snippet>
+          <template>
 
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat swipeout-delete>Delete</morph-button>
-            </span>
+            <morph-swipeout overswiper>
 
-            <div class="slot-content-div">
-              <p>Swipeout content</p> 
-            </div>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat swipeout-delete>Delete</morph-button>
+              </span>
 
-            <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
-            </span>
+              <div class="slot-content-div">
+                <p>Swipeout content</p> 
+              </div>
 
-          </morph-swipeout>
+              <span slot="right-buttons" on-click="buttonClickHandler">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Are you sure you want to delete this item?">Delete</morph-button>
+              </span>
 
-          <morph-swipeout>
+            </morph-swipeout>
 
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="green" filled flat>Action</morph-button>
-            </span>
+            <morph-swipeout>
 
-            <div class="slot-content-div">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magni molestias enim deleniti voluptatibus, laboriosam dolore eos perferendis optio, voluptate facilis saepe quos ipsam earum atque explicabo neque placeat quod.</p>
-            </div>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="green" filled flat>Action</morph-button>
+              </span>
 
-            <span slot="right-buttons" on-click="buttonClickHandler">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
+              <div class="slot-content-div">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias magni molestias enim deleniti voluptatibus, laboriosam dolore eos perferendis optio, voluptate facilis saepe quos ipsam earum atque explicabo neque placeat quod.</p>
+              </div>
 
-          </morph-swipeout>
-          
-          <morph-swipeout overswiper>
+              <span slot="right-buttons" on-click="buttonClickHandler">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
 
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Oh, Are you sure you want to delete this item?">Delete</morph-button>
-            </span>
-
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
-
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete>Delete</morph-button>
-            </span>
-
-          </morph-swipeout>
-
-          <morph-swipeout overswiper>
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
+            </morph-swipeout>
             
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-          </morph-swipeout>
+            <morph-swipeout overswiper>
 
-          <morph-swipeout overswiper>
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete swipeout-delete swipeout-prompt-text="Oh, Are you sure you want to delete this item?">Delete</morph-button>
+              </span>
 
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
-          
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-          </morph-swipeout>
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
 
-          <morph-swipeout overswiper>
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete swipeout-delete>Delete</morph-button>
+              </span>
 
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
-          
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-          </morph-swipeout>
+            </morph-swipeout>
 
-          <morph-swipeout overswiper>
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
+            <morph-swipeout overswiper>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
 
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
-          
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-          </morph-swipeout>
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
+              
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+            </morph-swipeout>
 
-          <morph-swipeout overswiper>
-            <span slot="left-buttons">
-              <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
+            <morph-swipeout overswiper>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
 
-            <div class="slot-content-div">
-              <p>Swipeout content</p>
-            </div>
-          
-            <span slot="right-buttons">
-              <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
-            </span>
-          </morph-swipeout>
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
+            
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+            </morph-swipeout>
 
-        </template>
-      </demo-snippet>
-    </div>
+            <morph-swipeout overswiper>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
+            
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+            </morph-swipeout>
+
+            <morph-swipeout overswiper>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
+            
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+            </morph-swipeout>
+
+            <morph-swipeout overswiper>
+              <span slot="left-buttons">
+                <morph-button class="swiper-integration-class" id="leftLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+
+              <div class="slot-content-div">
+                <p>Swipeout content</p>
+              </div>
+            
+              <span slot="right-buttons">
+                <morph-button class="swiper-integration-class" id="rightLastButton" color="red" filled flat item-delete>Delete</morph-button>
+              </span>
+            </morph-swipeout>
+
+          </template>
+        </demo-snippet>
+      </div>
+      `;
+
+        document.body.appendChild($_documentContainer.content);
+    </script>
   </body>
 </html>
