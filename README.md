@@ -13,7 +13,7 @@ For the information about how to clone the desired repository, running the local
 - Here is a quick demo of the `morph-swipeout` element swiping open delete button and clicking on the button to delete item.
 
   <p align="center">
-    <img src="demo-images/morph-swipeout-demo.gif" alt="morph-swipeout demo"/>
+    <img src="https://github.com/moduware/morph-swipeout/blob/master/demo-images/morph-swipeout-demo.gif?raw=true" alt="morph-swipeout demo"/>
   </p>
 
 - This is a sample HTML markup for `morph-swipeout` with left and right buttons

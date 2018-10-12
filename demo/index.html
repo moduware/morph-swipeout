@@ -10,20 +10,12 @@
 
     <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
     <script type="module" src="../node_modules/@polymer/iron-demo-helpers/demo-snippet.js"></script>
-    <script type="module" src="../node_modules/morph-shared-colors/morph-shared-colors.js"></script>
-    <script type="module" src="../node_modules/morph-button/morph-button.js"></script>
-    <script type="module" src="../node_modules/morph-list-view/morph-list-view.js"></script>
-    <script type="module" src="../node_modules/morph-list-view-item/morph-list-view-item.js"></script>
+    <script type="module" src="../node_modules/@moduware/morph-shared-colors/morph-shared-colors.js"></script>
+    <script type="module" src="../node_modules/@moduware/morph-button/morph-button.js"></script>
+    <script type="module" src="../node_modules/@moduware/morph-list-view/morph-list-view.js"></script>
+    <script type="module" src="../node_modules/@moduware/morph-list-view-item/morph-list-view-item.js"></script>
     <script type="module" src="../morph-swipeout.js"></script>
 
-    <!-- FIXME(polymer-modulizer):
-        These imperative modules that innerHTML your HTML are
-        a hacky way to be sure that any mixins in included style
-        modules are ready before any elements that reference them are
-        instantiated, otherwise the CSS @apply mixin polyfill won't be
-        able to expand the underlying CSS custom properties.
-        See: https://github.com/Polymer/polymer-modulizer/issues/154
-        -->
     <script type="module">
       var $_documentContainer = document.createElement('template');
 

@@ -1,29 +1,28 @@
 {
   "description": "Component to allow swipeout of content by use that will reveal additional actions that don&#39;t take screen space normally",
-  "name": "@polymer/morph-swipeout",
+  "name": "@moduware/morph-swipeout",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moduware/morph-sidebar"
+  },
   "scripts": {
     "start": "polymer serve --npm --module-resolution=node"
-  },
-  "resolutions": {
-    "inherits": "2.0.3",
-    "samsam": "1.1.3",
-    "supports-color": "3.1.2",
-    "type-detect": "1.0.0"
   },
   "main": "morph-swipeout.js",
   "license": "Apache-2.0",
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
-    "@polymer/iron-test-helpers": "^3.0.0-pre.18"
+    "@polymer/iron-test-helpers": "^3.0.0-pre.18",
+    "@moduware/morph-element": "^1.0.0"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.18",
     "wct-browser-legacy": "^1.0.1",
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "morph-button": "github:moduware/morph-button#polymer3",
-    "morph-list-view": "github:moduware/morph-list-view#polymer3",
-    "morph-list-view-item": "github:moduware/morph-list-view-item#polymer3",
-    "morph-shared-colors": "github:moduware/morph-shared-colors#polymer3"
+    "@moduware/morph-button": "^1.0.0",
+    "@moduware/morph-list-view": "^1.0.0",
+    "@moduware/morph-list-view-item": "^1.0.0",
+    "@moduware/morph-shared-colors": "^1.0.0"
   }
 }

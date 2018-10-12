@@ -2,6 +2,51 @@
 # yarn lockfile v1
 
 
+"@moduware/morph-button@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-button/-/morph-button-1.0.0.tgz#69cbed4accc95e9921cf036747b2fd406274ab2c"
+  dependencies:
+    "@moduware/morph-element" "^1.0.0"
+    "@moduware/morph-ripple" "^1.0.0"
+    "@polymer/polymer" "^3.0.0"
+
+"@moduware/morph-element@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-element/-/morph-element-1.0.0.tgz#595bfef96781abd6c09c7ec43cd47b8f2d722909"
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+
+"@moduware/morph-list-view-item@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-list-view-item/-/morph-list-view-item-1.0.0.tgz#7281e124b74cae07513037c687b0428048b73fc9"
+  dependencies:
+    "@moduware/morph-element" "^1.0.0"
+    "@moduware/morph-ripple" "^1.0.0"
+    "@moduware/morph-shared-styles" "^1.0.0"
+    "@polymer/iron-icons" "^3.0.0-pre.18"
+    "@polymer/polymer" "^3.0.0"
+
+"@moduware/morph-list-view@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-list-view/-/morph-list-view-1.0.0.tgz#58ba67fa30e580584b14723b4dba6b0692bba241"
+  dependencies:
+    "@moduware/morph-element" "^1.0.0"
+    "@polymer/polymer" "^3.0.0"
+
+"@moduware/morph-ripple@^1.0.0":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-ripple/-/morph-ripple-1.0.2.tgz#a9b3621852f4bbcee306160028027c48d0f0dd37"
+  dependencies:
+    "@polymer/polymer" "^3.0.0"
+
+"@moduware/morph-shared-colors@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-shared-colors/-/morph-shared-colors-1.0.0.tgz#eed2a66972f54c2f7a8bb045a7f5915a0482d386"
+
+"@moduware/morph-shared-styles@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@moduware/morph-shared-styles/-/morph-shared-styles-1.0.0.tgz#1a7a55381e790cad6c1cba0f14688d39aa2a7600"
+
 "@polymer/font-roboto@^3.0.0-pre.25":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@polymer/font-roboto/-/font-roboto-3.0.2.tgz#80cdaa7225db2359130dfb2c6d9a3be1820020c3"
@@ -351,72 +396,6 @@ mocha@^3.4.2:
     mkdirp "0.5.1"
     supports-color "3.1.2"
 
-"morph-button@github:moduware/morph-button#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-button/tar.gz/78bc0a5b2cbe14f0a534bb4c11077ad5ca47314f"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-    morph-element "github:moduware/morph-element#polymer3"
-    morph-ripple "github:moduware/morph-ripple#polymer3"
-    morph-shared-colors "github:moduware/morph-shared-colors#polymer3"
-    morph-shared-styles "github:moduware/morph-shared-styles#polymer3"
-
-"morph-element@github:moduware/morph-element#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-element/tar.gz/1fc7338f6b1f5125f27938969d0b1c20a62bb209"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-
-"morph-element@https://github.com/moduware/morph-element.git#polymer3":
-  version "1.0.0"
-  uid "1fc7338f6b1f5125f27938969d0b1c20a62bb209"
-  resolved "https://github.com/moduware/morph-element.git#1fc7338f6b1f5125f27938969d0b1c20a62bb209"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-
-"morph-list-view-item@github:moduware/morph-list-view-item#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-list-view-item/tar.gz/8063b9040479c787eafca7086377f61270be59b5"
-  dependencies:
-    "@polymer/iron-icons" "^3.0.0-pre.18"
-    "@polymer/polymer" "^3.0.0"
-    morph-element "https://github.com/moduware/morph-element.git#polymer3"
-    morph-ripple "https://github.com/moduware/morph-ripple.git#polymer3"
-    morph-shared-styles "https://github.com/moduware/morph-shared-styles.git#polymer3"
-
-"morph-list-view@github:moduware/morph-list-view#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-list-view/tar.gz/11e721a4312d63d76c7eb35d5fbbd4e40590f48b"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-    morph-element "github:moduware/morph-element#polymer3"
-
-"morph-ripple@github:moduware/morph-ripple#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-ripple/tar.gz/48288f4953d24da7a1fc857eec2b2f7e3596e9bb"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-
-"morph-ripple@https://github.com/moduware/morph-ripple.git#polymer3":
-  version "1.0.0"
-  uid "48288f4953d24da7a1fc857eec2b2f7e3596e9bb"
-  resolved "https://github.com/moduware/morph-ripple.git#48288f4953d24da7a1fc857eec2b2f7e3596e9bb"
-  dependencies:
-    "@polymer/polymer" "^3.0.0"
-
-"morph-shared-colors@github:moduware/morph-shared-colors#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-shared-colors/tar.gz/6cb6c825d60bcc254d5d1ccc6751859aac48b24d"
-
-"morph-shared-styles@github:moduware/morph-shared-styles#polymer3":
-  version "1.0.0"
-  resolved "https://codeload.github.com/moduware/morph-shared-styles/tar.gz/f2dcae832215dab8de3ea3ff071e179ef6f76154"
-
-"morph-shared-styles@https://github.com/moduware/morph-shared-styles.git#polymer3":
-  version "1.0.0"
-  uid f2dcae832215dab8de3ea3ff071e179ef6f76154
-  resolved "https://github.com/moduware/morph-shared-styles.git#f2dcae832215dab8de3ea3ff071e179ef6f76154"
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -437,7 +416,11 @@ prismjs@^1.11.0:
   optionalDependencies:
     clipboard "^2.0.0"
 
-samsam@1.1.2, samsam@1.1.3, samsam@~1.1:
+samsam@1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.1.2.tgz#bec11fdc83a9fda063401210e40176c3024d1567"
+
+samsam@~1.1:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.1.3.tgz#9f5087419b4d091f232571e7fa52e90b0f552621"
 
@@ -471,17 +454,25 @@ strip-ansi@^3.0.0:
   dependencies:
     ansi-regex "^2.0.0"
 
-supports-color@3.1.2, supports-color@^2.0.0:
+supports-color@3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-3.1.2.tgz#72a262894d9d408b956ca05ff37b2ed8a6e2a2d5"
   dependencies:
     has-flag "^1.0.0"
 
+supports-color@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
+
 tiny-emitter@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/tiny-emitter/-/tiny-emitter-2.0.2.tgz#82d27468aca5ade8e5fd1e6d22b57dd43ebdfb7c"
 
-type-detect@0.1.1, type-detect@1.0.0, type-detect@^1.0.0:
+type-detect@0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-0.1.1.tgz#0ba5ec2a885640e470ea4e8505971900dac58822"
+
+type-detect@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-1.0.0.tgz#762217cc06db258ec48908a1298e8b95121e8ea2"
 

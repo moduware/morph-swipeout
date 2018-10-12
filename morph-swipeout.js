@@ -1,10 +1,10 @@
-import { MorphElement } from 'morph-element/morph-element.js';
-import { PolymerElement } from '@polymer/polymer/polymer-element.js';
+import { MorphElement } from '@moduware/morph-element/morph-element.js';
+import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
-import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 import { addListener, setTouchAction, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
+
 /**
  * `morph-swipeout`
  * Component to allow swipeout of content by use that will reveal additional actions that don't take screen space normally
@@ -13,7 +13,7 @@ import { addListener, setTouchAction, removeListener } from '@polymer/polymer/li
  * @polymer
  * @demo demo/index.html
  */
-class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerElement)) {
+export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerElement)) {
   static get template() {
     return html`
     <style>
