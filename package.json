@@ -7,7 +7,8 @@
     "url": "https://github.com/moduware/morph-sidebar"
   },
   "scripts": {
-    "start": "polymer serve --npm --module-resolution=node"
+    "start": "polymer serve --npm --module-resolution=node",
+    "test": "wct"
   },
   "main": "morph-swipeout.js",
   "license": "Apache-2.0",
@@ -23,6 +24,7 @@
     "@moduware/morph-button": "^1.0.0",
     "@moduware/morph-list-view": "^1.0.0",
     "@moduware/morph-list-view-item": "^1.0.0",
-    "@moduware/morph-shared-colors": "^1.0.0"
+    "@moduware/morph-shared-colors": "^1.0.0",
+    "wct-istanbub": "^0.2.7"
   }
 }
