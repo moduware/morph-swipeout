@@ -1,20 +1,22 @@
-import { MorphElement } from '@moduware/morph-element/morph-element.js';
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+// import { MorphElement } from '@moduware/morph-element/morph-element.js';
+// import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
+import { LitElement, html } from '@polymer/lit-element';
 import '@polymer/polymer/lib/utils/render-status.js';
 import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { addListener, setTouchAction, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
+import { getPlatform } from './src/morph-element.js';
 
 /**
  * `morph-swipeout`
  * Component to allow swipeout of content by use that will reveal additional actions that don't take screen space normally
  *
  * @customElement
- * @polymer
+ * @extends HTMLElement
  * @demo demo/index.html
  */
-export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerElement)) {
-  static get template() {
+export class MorphSwipeout extends LitElement {
+  render() {
     return html`
     <style>
       :host {
@@ -133,20 +135,27 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
       }
     };
   }
+  
+  firstUpdated() {
+    super.firstUpdated();
+    let self = this;
+    // let morphButtonRightAsync, morphButtonRightAsync;
 
-  connectedCallback() {
-    super.connectedCallback();
+    addListener(self, 'track', e => self.handleTrack(e));
+
+    this.overswipeTreshold = this.offsetWidth / 2;
+  }
+
+  updated() {
+    super.updated();
     this._observer = new FlattenedNodesObserver(this, (info) => {
       this.info = info;
     });
     this._observer.flush();
 
-    let self = this;
-    // let morphButtonRightAsync, morphButtonRightAsync;
-
-    addListener(self, 'track', e => self.handleTrack(e));
     setTouchAction(this, 'pan-y');
-
+    let self = this;
+    
     (async () => {
       const morphButtonRight = await self._getMorphButtonElement('right');
       const morphButtonLeft = await self._getMorphButtonElement('left');
@@ -162,11 +171,6 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
       if(morphButtonLeft) morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
     })();
 
-  }
-
-  ready() {
-    super.ready();
-    this.overswipeTreshold = this.offsetWidth / 2;
   }
 
   /**
@@ -219,12 +223,15 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
   * @param {Object} button - Element animate and delete
   */
   async _animateDeleteAction(button) {
-    this.$.animationContainer.style.height = this.clientHeight + 'px';
+    const shadow = this.shadowRoot;
+    let animationContainer = shadow.querySelector('#animationContainer');
+    animationContainer.style.height = this.clientHeight + 'px';
     await this.waitNextFrame();
     await this._sleep(0);
-    this.$.animationContainer.style.height = '0px';
-    await this.waitForTranstionEnd(this.$.animationContainer, 'height');
-    this.parentNode.removeChild(this);
+    animationContainer.style.height = '0px';
+    
+    await this.waitForTranstionEnd(animationContainer, 'height');
+    this.remove();
   }
 
   /**
@@ -272,6 +279,10 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
   * @param {Object} event - The value of the travel of event left or right scroll
   */
   async handleTrack(event) {
+    console.log('handelTrack called!');
+    
+    const shadow = this.shadowRoot;
+    let rootContainer = shadow.querySelector('#rootContainer');
     let distance = event.detail.dx;
 
     //if track distance is just lesst then +/- 10 it will not start the swiping action
@@ -288,12 +299,15 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
 
     /* START ACTIONS */
     if(event.detail.state == 'start') {
-      this._trackInitialTransform = this._getTransformTranslateX(this.$.rootContainer);
+      
+      this._trackInitialTransform = this._getTransformTranslateX(rootContainer);
       // we don't want smooth transitions during user interaction, so removing css smoother
-      this.$.rootContainer.classList.add('no-transition');
+      rootContainer.classList.add('no-transition');
       // determining our buttons container sizes
-      this._rightButtonsContainerSize = this.$.rightButtonsContainer.offsetWidth;
-      this._leftButtonsContainerSize = this.$.leftButtonsContainer.offsetWidth;
+      const rightButtonsContainer = shadow.querySelector('#rightButtonsContainer');
+      const leftButtonsContainer = shadow.querySelector('#leftButtonsContainer');
+      this._rightButtonsContainerSize = rightButtonsContainer.offsetWidth;
+      this._leftButtonsContainerSize = leftButtonsContainer.offsetWidth;
     } 
     
     /* SHARED ACTIONS */
@@ -306,7 +320,7 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
     /* END ACTIONS */
     if(event.detail.state == 'end') {
       // after user finished interaction, enabling css smoother back
-      this.$.rootContainer.classList.remove('no-transition');
+      rootContainer.classList.remove('no-transition');
       
       // calculating positive distance (signless)
       const normalizeTransform = Math.abs(newTransform);
@@ -325,7 +339,7 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
     }
     
     // Shared code: this is done after every tracking event
-    this.$.rootContainer.style.transform = `translateX(${newTransform}px)`;
+    rootContainer.style.transform = `translateX(${newTransform}px)`;
   }
 
   _getTransformTranslateX(target) {
@@ -335,13 +349,15 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
   }
 
   async _completeOverswipe(direction) {
+    const shadow = this.shadowRoot;
+    let rootContainer = shadow.querySelector('#rootContainer');
     const buttonPosition = direction == 'left' ? 'right' : 'left';
     if (buttonPosition == 'left') {
-      this.$.rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
+      rootContainer.style.transform = `translateX(${this.offsetWidth}px)`;
     } else if (buttonPosition == 'right') {
-      this.$.rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
+      rootContainer.style.transform = `translateX(-${this.offsetWidth}px)`;
     }
-    await this.waitForTranstionEnd(this.$.rootContainer);
+    await this.waitForTranstionEnd(rootContainer);
   }
 
   async _handleOverswipe(direction) {
@@ -381,7 +397,8 @@ export class MorphSwipeout extends MorphElement(GestureEventListeners(PolymerEle
   * Closes the swipeout element
   */
   _closeSwipe() {
-    const rootContainer = this.$.rootContainer;
+    const shadow = this.shadowRoot;
+    const rootContainer = shadow.querySelector('#rootContainer');
     
     rootContainer.style.transform = `translateX(0px)`;
   }

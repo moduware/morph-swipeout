@@ -15,6 +15,7 @@
     <script type="module" src="../node_modules/@moduware/morph-button/morph-button.js"></script>
     <script type="module" src="../morph-swipeout.js"></script>
   </head>
+  
   <body>
 
     <test-fixture id="BasicIosTestFixture">
@@ -158,603 +159,606 @@
     </test-fixture>
 
     <script type="module">
-import '../morph-swipeout.js';
-import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
-import { addListener } from '@polymer/polymer/lib/utils/gestures.js';
-describe('morph-swipeout', () => {
 
-  describe('_getMorphButtonElement()', () => {
-    let iosElement;
-
-    beforeEach( function() {
-      iosElement = fixture('BasicIosTestFixture');
-    });
-
-    it('Should return the correct button from left', async () => {
-      const buttonPosition = 'left';
-      const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
-      const expectedInnerHTMLOfMorphButton = 'Action';
+      import '../morph-swipeout.js';
+      import '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
+      import { addListener } from '@polymer/polymer/lib/utils/gestures.js';
       
-      expect(leftMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
-    });
+      describe('morph-swipeout', () => {
 
-    it('Should return the correct button from right', async () => {
-      const buttonPosition = 'right';
-      const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
-      const expectedInnerHTMLOfMorphButton = 'Delete';
+        describe('_getMorphButtonElement()', () => {
+          let iosElement;
 
-      expect(rightMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
-    });
-
-    it('Should return the correct color attribute of left morph-button', async () => {
-      const buttonPosition = 'left';
-      const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
-      const expectedColorAttributeOfMorphButton = 'green';
-      
-      expect(leftMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
-    });
-
-    it('Should return the correct color attribute of right morph-button', async () => {
-      const buttonPosition = 'right';
-      const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
-      const expectedColorAttributeOfMorphButton = 'red';
-
-      expect(rightMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
-    });
-
-
-
-  }); // _getMorphButtonElement()
-
-  describe('_getElementBackgroundColor(element) for IOS platform', () => {
-    let element;
-
-    beforeEach(function () {
-      element = fixture('BasicIosTestFixture');
-    });
-
-    it('Should return the correct background-color for left morph-button', async () => {
-      const leftMorphButton = await element._getMorphButtonElement('left');
-      const result = element._getElementBackgroundColor(leftMorphButton);
-      const styles = window.getComputedStyle(leftMorphButton);
-      const expectedBackgroundColor = 'rgb(76, 217, 100)';
-
-      expect(result).to.equal(expectedBackgroundColor);
-    });
-
-    it('Should return the correct background-color for right morph-button', async () => {
-      const rightMorphButton = await element._getMorphButtonElement('right');
-      const result = element._getElementBackgroundColor(rightMorphButton);
-      const expectedBackgroundColor = 'rgb(255, 59, 48)';
-
-      expect(result).to.equal(expectedBackgroundColor);
-    });
-
-  }); // _getElementBackgroundColor(element) for IOS platform
-
-  // BasicAndroidTestFixture
-  describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
-    let element;
-
-    beforeEach(function () {
-      element = fixture('BasicAndroidTestFixture');
-    });
-
-    it('Should return the correct background-color for left morph-button', async () => {
-      const rightMorphButton = await element._getMorphButtonElement('left');
-      const result = element._getElementBackgroundColor(rightMorphButton);
-      const expectedBackgroundColor = 'rgb(76, 175, 80)';
-
-      expect(result).to.equal(expectedBackgroundColor);
-    });
-
-  }); // _getElementBackgroundColor(buttonPosition) for Android platform
-  
-
-  // TODO: FIX TEST FROM THIS LINE ONWARDS
-  describe('handleTrack(event) for iOS', () => {
-    let element, functionStub;
-    let mockEvent;
-
-    beforeEach( () => {
-      element = fixture('BasicIosTestFixture');
-
-      stub('morph-swipeout', {
-        handleTrack: function () {
-          console.log('handleTrack called!');
-        }
-      });
-    });
-
-    afterEach(function () {
-      element.handleTrack.restore();
-    });
-
-    it('Should call handleTrack when track event is fired', (done) => {
-      flush(function() {
-        expect(element.handleTrack.callCount).to.be.equal(0);
-        
-        addListener(element, 'track', e => {
-          expect(element.handleTrack.callCount).to.be.equal(1);
-          done();
-        });
-
-        var event = new CustomEvent('track', {
-          detail: {dx: 200}
-        });
-        
-        element.dispatchEvent(event);
-      });
-      
-    });
-    
-    
-  }); // handleTrack(event) for iOS
-  
-  describe('overswiper for IOS', () => {
-    let element;
-
-    beforeEach( () => {
-      element = fixture('IosTestFixtureOverswiper');
-    });
-
-    describe('Track distance is greater than overswipeTreshold', () => {
-      let endEvent;
-
-      beforeEach(() => {
-
-        stub('morph-swipeout', {
-          _completeOverswipe: function () {
-            console.log('_completeOverswipe called!');
-          }
-        });
-
-        stub('morph-swipeout', {
-          _handleOverswipe: function () {
-            console.log('_handleOverswipe called!');
-          }
-        });
-
-        endEvent = new CustomEvent('track', {
-          detail: {
-            dx: -601,
-            state: 'end'
-          }
-        });
-      });
-
-      afterEach(function () {
-        element._completeOverswipe.restore();
-        element._handleOverswipe.restore();
-      });
-
-      it('Should call _completeOverswipe', (done) => {
-        flush(function () {
-          addListener(element, 'track', e => {
-            expect(element._completeOverswipe.callCount).to.be.equal(1);
-            done();
+          beforeEach( function() {
+            iosElement = fixture('BasicIosTestFixture');
           });
-          
-          element._trackInitialTransform = 0;
-          element.overswipeTreshold = 500;
-          element.dispatchEvent(endEvent);
 
-        });
+          it('Should return the correct button from left', async () => {
+            const buttonPosition = 'left';
+            const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedInnerHTMLOfMorphButton = 'Action';
+            
+            expect(leftMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
+          });
 
-      });
-      
-      it('Should call _handleOverswipe', (done) => {
-        flush(function () {
-          addListener(element, 'track', e => {
+          it('Should return the correct button from right', async () => {
+            const buttonPosition = 'right';
+            const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedInnerHTMLOfMorphButton = 'Delete';
+
+            expect(rightMorphButton.innerHTML).to.equal(expectedInnerHTMLOfMorphButton);
+          });
+
+          it('Should return the correct color attribute of left morph-button', async () => {
+            const buttonPosition = 'left';
+            const leftMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedColorAttributeOfMorphButton = 'green';
+            
+            expect(leftMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
+          });
+
+          it('Should return the correct color attribute of right morph-button', async () => {
+            const buttonPosition = 'right';
+            const rightMorphButton = await iosElement._getMorphButtonElement(buttonPosition);
+            const expectedColorAttributeOfMorphButton = 'red';
+
+            expect(rightMorphButton.color).to.be.equal(expectedColorAttributeOfMorphButton);
+          });
+
+
+
+        }); // _getMorphButtonElement()
+
+        describe('_getElementBackgroundColor(element) for IOS platform', () => {
+          let element;
+
+          beforeEach(function () {
+            element = fixture('BasicIosTestFixture');
+          });
+
+          it('Should return the correct background-color for left morph-button', async () => {
+            const leftMorphButton = await element._getMorphButtonElement('left');
+            const result = element._getElementBackgroundColor(leftMorphButton);
+            const styles = window.getComputedStyle(leftMorphButton);
+            const expectedBackgroundColor = 'rgb(76, 217, 100)';
+
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+          it('Should return the correct background-color for right morph-button', async () => {
+            const rightMorphButton = await element._getMorphButtonElement('right');
+            const result = element._getElementBackgroundColor(rightMorphButton);
+            const expectedBackgroundColor = 'rgb(255, 59, 48)';
+
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+        }); // _getElementBackgroundColor(element) for IOS platform
+
+        // BasicAndroidTestFixture
+        describe('_getElementBackgroundColor(buttonPosition) for Android platform', () => {
+          let element;
+
+          beforeEach(function () {
+            element = fixture('BasicAndroidTestFixture');
+          });
+
+          it('Should return the correct background-color for left morph-button', async () => {
+            const rightMorphButton = await element._getMorphButtonElement('left');
+            const result = element._getElementBackgroundColor(rightMorphButton);
+            const expectedBackgroundColor = 'rgb(76, 175, 80)';
+
+            expect(result).to.equal(expectedBackgroundColor);
+          });
+
+        }); // _getElementBackgroundColor(buttonPosition) for Android platform
+        
+
+        // TODO: FIX TEST FROM THIS LINE ONWARDS
+        describe('handleTrack(event) for iOS', () => {
+          let element, functionStub;
+          let mockEvent;
+
+          beforeEach( () => {
+            element = fixture('BasicIosTestFixture');
+
+            stub('morph-swipeout', {
+              handleTrack: function () {
+                console.log('handleTrack called!');
+              }
+            });
+          });
+
+          afterEach(function () {
+            element.handleTrack.restore();
+          });
+
+          it('Should call handleTrack when track event is fired', (done) => {
             flush(function() {
-              expect(element._handleOverswipe.callCount).to.be.equal(1);
-              done();
-            });
+              expect(element.handleTrack.callCount).to.be.equal(0);
+              
+              addListener(element, 'track', e => {
+                expect(element.handleTrack.callCount).to.be.equal(1);
+                done();
+              });
 
+              var event = new CustomEvent('track', {
+                detail: {dx: 200}
+              });
+              
+              element.dispatchEvent(event);
+            });
+            
           });
           
-          element._trackInitialTransform = 0;
-          element.overswipeTreshold = 500;
-          element.dispatchEvent(endEvent);
-        });
+          
+        }); // handleTrack(event) for iOS
+        
+        describe('overswiper for IOS', () => {
+          let element;
 
-      });
-
-    }); // Track distance is greater than overswipeTreshold
-
-    describe('Track distance is less than overswipeTreshold', () => {
-      let endEvent;
-
-      beforeEach(() => {
-
-        stub('morph-swipeout', {
-          _completeOverswipe: function () {
-            console.log('_completeOverswipe called!');
-          }
-        });
-
-        stub('morph-swipeout', {
-          _handleOverswipe: function () {
-            console.log('_handleOverswipe called!');
-          }
-        });
-
-        endEvent = new CustomEvent('track', {
-          detail: {
-            dx: 201,
-            state: 'end'
-          }
-        });
-      });
-
-      afterEach( () => {
-        element._completeOverswipe.restore();
-        element._handleOverswipe.restore();
-      });
-
-      it('Should NOT call _completeOverswipe', (done) => {
-        flush(function() {
-          addListener(element, 'track', e => {
-            expect(element._completeOverswipe.called).to.be.false;
-            done();
+          beforeEach( () => {
+            element = fixture('IosTestFixtureOverswiper');
           });
 
-          element._trackInitialTransform = 0;
-          element.overswipeTreshold = 500;
-          element.dispatchEvent(endEvent);
-        });
-      });
+          describe('Track distance is greater than overswipeTreshold', () => {
+            let endEvent;
 
-      it('Should NOT call _handleOverswipe', (done) => {
-        flush(function() {
-          addListener(element, 'track', e => {
-            expect(element._handleOverswipe.called).to.be.false;
-            done();
+            beforeEach(() => {
+
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: -601,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach(function () {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should call _completeOverswipe', (done) => {
+              flush(function () {
+                addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.callCount).to.be.equal(1);
+                  done();
+                });
+                
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+
+              });
+
+            });
+            
+            it('Should call _handleOverswipe', (done) => {
+              flush(function () {
+                addListener(element, 'track', e => {
+                  flush(function() {
+                    expect(element._handleOverswipe.callCount).to.be.equal(1);
+                    done();
+                  });
+
+                });
+                
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+
+            });
+
+          }); // Track distance is greater than overswipeTreshold
+
+          describe('Track distance is less than overswipeTreshold', () => {
+            let endEvent;
+
+            beforeEach(() => {
+
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: 201,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach( () => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should NOT call _completeOverswipe', (done) => {
+              flush(function() {
+                addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.called).to.be.false;
+                  done();
+                });
+
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+            it('Should NOT call _handleOverswipe', (done) => {
+              flush(function() {
+                addListener(element, 'track', e => {
+                  expect(element._handleOverswipe.called).to.be.false;
+                  done();
+                });
+
+                element._trackInitialTransform = 0;
+                element.overswipeTreshold = 500;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+          }); // Track distance is less than overswipeTreshold
+
+
+          
+        }); // overswiper for IOS
+
+        describe('overswiper for Android', () => {
+          let element;
+
+          beforeEach(() => {
+            element = fixture('AndroidTestFixtureOverswiper');
           });
 
-          element._trackInitialTransform = 0;
-          element.overswipeTreshold = 500;
-          element.dispatchEvent(endEvent);
-        });
-      });
+          describe('Track distance is greater than overswipeTreshold', () => {
+            let endEvent;
 
-    }); // Track distance is less than overswipeTreshold
+            beforeEach(() => {
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
 
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
 
-    
-  }); // overswiper for IOS
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: 600,
+                  state: 'end'
+                }
+              });
+            });
 
-  describe('overswiper for Android', () => {
-    let element;
+            afterEach(() => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
 
-    beforeEach(() => {
-      element = fixture('AndroidTestFixtureOverswiper');
-    });
+            it('Should call _completeOverswipe', (done) => {
+              flush(function() {
+                addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.calledOnce).to.be.true;
+                  done();
+                });
 
-    describe('Track distance is greater than overswipeTreshold', () => {
-      let endEvent;
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
 
-      beforeEach(() => {
-        stub('morph-swipeout', {
-          _completeOverswipe: function () {
-            console.log('_completeOverswipe called!');
-          }
-        });
+            it('Should call _handleOverswipe', (done) => {
+              flush(function () {
+                addListener(element, 'track', e => {
+                  flush(() => {
+                    expect(element._handleOverswipe.calledOnce).to.be.true;
+                    done();
+                  });
+                });
 
-        stub('morph-swipeout', {
-          _handleOverswipe: function () {
-            console.log('_handleOverswipe called!');
-          }
-        });
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
 
-        endEvent = new CustomEvent('track', {
-          detail: {
-            dx: 600,
-            state: 'end'
-          }
-        });
-      });
-
-      afterEach(() => {
-        element._completeOverswipe.restore();
-        element._handleOverswipe.restore();
-      });
-
-      it('Should call _completeOverswipe', (done) => {
-        flush(function() {
-          addListener(element, 'track', e => {
-            expect(element._completeOverswipe.calledOnce).to.be.true;
-            done();
           });
 
-          element._trackInitialTransform = 0;
-          element.dispatchEvent(endEvent);
-        });
-      });
+          describe('Track distance is less than overswipeTreshold', () => {
+            let endEvent;
 
-      it('Should call _handleOverswipe', (done) => {
-        flush(function () {
-          addListener(element, 'track', e => {
-            flush(() => {
-              expect(element._handleOverswipe.calledOnce).to.be.true;
-              done();
+            beforeEach(() => {
+              stub('morph-swipeout', {
+                _completeOverswipe: function () {
+                  console.log('_completeOverswipe called!');
+                }
+              });
+
+              stub('morph-swipeout', {
+                _handleOverswipe: function () {
+                  console.log('_handleOverswipe called!');
+                }
+              });
+
+              endEvent = new CustomEvent('track', {
+                detail: {
+                  dx: 200,
+                  state: 'end'
+                }
+              });
+            });
+
+            afterEach(() => {
+              element._completeOverswipe.restore();
+              element._handleOverswipe.restore();
+            });
+
+            it('Should NOT call _completeOverswipe', (done) => {
+              flush(() => {
+                addListener(element, 'track', e => {
+                  expect(element._completeOverswipe.calledOnce).to.be.false;
+                  done();              
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+
+            });
+
+            it('Should NOT call _handleOverswipe', (done) => {
+              flush(() => {
+                addListener(element, 'track', e => {
+                  flush(() => {
+                    expect(element._handleOverswipe.calledOnce).to.be.false;
+                    done();
+                  });
+                });
+
+                element._trackInitialTransform = 0;
+                element.dispatchEvent(endEvent);
+              });
+            });
+
+          });
+        }); // overswiper for Android
+
+        // swipeout-delete
+        describe('swipeout-delete property for IOS', () => {
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureSwipeoutDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // swipeout-delete property for IOS
+
+
+        describe('swipeout-delete property for Android', () => {
+          
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('AndroidTestFixtureSwipeoutDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // swipeout-delete property for Android
+        
+        describe('item-delete property for IOS', () => {
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureItemDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // item-delete property for IOS
+
+        describe('item-delete property for Android', () => {
+          AndroidTestFixtureItemDelete
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('AndroidTestFixtureItemDelete');
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
+            });
+
+          });
+
+          it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // item-delete property for IOS
+        
+        
+        describe('swipeout-prompt-text property for IOS', () => {
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('IosTestFixtureSwipeoutPromptText');
+
+            buttonElement = await element._getMorphButtonElement('right');
+            
+            stub('morph-swipeout', {
+              _confirmDialog: async function () {
+                return true;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
             });
           });
 
-          element._trackInitialTransform = 0;
-          element.dispatchEvent(endEvent);
-        });
-      });
-
-    });
-
-    describe('Track distance is less than overswipeTreshold', () => {
-      let endEvent;
-
-      beforeEach(() => {
-        stub('morph-swipeout', {
-          _completeOverswipe: function () {
-            console.log('_completeOverswipe called!');
-          }
-        });
-
-        stub('morph-swipeout', {
-          _handleOverswipe: function () {
-            console.log('_handleOverswipe called!');
-          }
-        });
-
-        endEvent = new CustomEvent('track', {
-          detail: {
-            dx: 200,
-            state: 'end'
-          }
-        });
-      });
-
-      afterEach(() => {
-        element._completeOverswipe.restore();
-        element._handleOverswipe.restore();
-      });
-
-      it('Should NOT call _completeOverswipe', (done) => {
-        flush(() => {
-          addListener(element, 'track', e => {
-            expect(element._completeOverswipe.calledOnce).to.be.false;
-            done();              
+          it('Should have text', () => {
+            expect(buttonElement.hasAttribute('swipeout-prompt-text')).to.be.true;
           });
 
-          element._trackInitialTransform = 0;
-          element.dispatchEvent(endEvent);
-        });
+          it('Should have text', () => {
+            let promptTExt = buttonElement.getAttribute('swipeout-prompt-text');
+            let expected = 'Do you want to delete?';
 
-      });
+            expect(promptTExt).to.be.equal(expected);
+          });
 
-      it('Should NOT call _handleOverswipe', (done) => {
-        flush(() => {
-          addListener(element, 'track', e => {
-            flush(() => {
-              expect(element._handleOverswipe.calledOnce).to.be.false;
-              done();
+          it('Should call _animateDeleteAction when confirm is true and swipe-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
+            
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+
+
+        }); // swipeout-prompt-text property for IOS
+        
+        describe('swipeout-prompt-text property for Android', () => {
+          let element, buttonElement;
+
+          beforeEach(async () => {
+            element = fixture('AndroidTestFixtureSwipeoutPromptText');
+
+            buttonElement = await element._getMorphButtonElement('right');
+
+            stub('morph-swipeout', {
+              _confirmDialog: async function () {
+                return true;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _getMorphButtonElement: async function () {
+                return buttonElement;
+              }
+            });
+
+            stub('morph-swipeout', {
+              _animateDeleteAction: function () {
+                console.log('_animateDeleteAction called!');
+              }
             });
           });
 
-          element._trackInitialTransform = 0;
-          element.dispatchEvent(endEvent);
-        });
-      });
+          it('Should have text', () => {
+            expect(buttonElement.hasAttribute('swipeout-prompt-text')).to.be.true;
+          });
 
-    });
-  }); // overswiper for Android
+          it('Should have text', () => {
+            let promptTExt = buttonElement.getAttribute('swipeout-prompt-text');
+            let expected = 'Do you want to delete?';
 
-  // swipeout-delete
-  describe('swipeout-delete property for IOS', () => {
-    let element, buttonElement;
+            expect(promptTExt).to.be.equal(expected);
+          });
 
-    beforeEach(async () => {
-      element = fixture('IosTestFixtureSwipeoutDelete');
-      buttonElement = await element._getMorphButtonElement('right');
+          it('Should call _animateDeleteAction when confirm is true and swipe-delete attribute is present on morph-button', async () => {
+            await element._handleOverswipe();
 
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-
-    });
-
-    it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-  }); // swipeout-delete property for IOS
+            expect(element._animateDeleteAction.callCount).to.be.equal(1);
+          });
+        }); // swipeout-prompt-text property for Android
 
 
-  describe('swipeout-delete property for Android', () => {
-    
-    let element, buttonElement;
+      }); // morph-swipeout
 
-    beforeEach(async () => {
-      element = fixture('AndroidTestFixtureSwipeoutDelete');
-      buttonElement = await element._getMorphButtonElement('right');
-
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-
-    });
-
-    it('Should call _animateDeleteAction when swipeout-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-  }); // swipeout-delete property for Android
-  
-  describe('item-delete property for IOS', () => {
-    let element, buttonElement;
-
-    beforeEach(async () => {
-      element = fixture('IosTestFixtureItemDelete');
-      buttonElement = await element._getMorphButtonElement('right');
-
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-
-    });
-
-    it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-  }); // item-delete property for IOS
-
-  describe('item-delete property for Android', () => {
-    AndroidTestFixtureItemDelete
-    let element, buttonElement;
-
-    beforeEach(async () => {
-      element = fixture('AndroidTestFixtureItemDelete');
-      buttonElement = await element._getMorphButtonElement('right');
-
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-
-    });
-
-    it('Should call _animateDeleteAction when item-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-  }); // item-delete property for IOS
-  
-  
-  describe('swipeout-prompt-text property for IOS', () => {
-    let element, buttonElement;
-
-    beforeEach(async () => {
-      element = fixture('IosTestFixtureSwipeoutPromptText');
-
-      buttonElement = await element._getMorphButtonElement('right');
-      
-      stub('morph-swipeout', {
-        _confirmDialog: async function () {
-          return true;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-    });
-
-    it('Should have text', () => {
-      expect(buttonElement.hasAttribute('swipeout-prompt-text')).to.be.true;
-    });
-
-    it('Should have text', () => {
-      let promptTExt = buttonElement.getAttribute('swipeout-prompt-text');
-      let expected = 'Do you want to delete?';
-
-      expect(promptTExt).to.be.equal(expected);
-    });
-
-    it('Should call _animateDeleteAction when confirm is true and swipe-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-      
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-
-
-  }); // swipeout-prompt-text property for IOS
-  
-  describe('swipeout-prompt-text property for Android', () => {
-    let element, buttonElement;
-
-    beforeEach(async () => {
-      element = fixture('AndroidTestFixtureSwipeoutPromptText');
-
-      buttonElement = await element._getMorphButtonElement('right');
-
-      stub('morph-swipeout', {
-        _confirmDialog: async function () {
-          return true;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _getMorphButtonElement: async function () {
-          return buttonElement;
-        }
-      });
-
-      stub('morph-swipeout', {
-        _animateDeleteAction: function () {
-          console.log('_animateDeleteAction called!');
-        }
-      });
-    });
-
-    it('Should have text', () => {
-      expect(buttonElement.hasAttribute('swipeout-prompt-text')).to.be.true;
-    });
-
-    it('Should have text', () => {
-      let promptTExt = buttonElement.getAttribute('swipeout-prompt-text');
-      let expected = 'Do you want to delete?';
-
-      expect(promptTExt).to.be.equal(expected);
-    });
-
-    it('Should call _animateDeleteAction when confirm is true and swipe-delete attribute is present on morph-button', async () => {
-      await element._handleOverswipe();
-
-      expect(element._animateDeleteAction.callCount).to.be.equal(1);
-    });
-  }); // swipeout-prompt-text property for Android
-
-
-}); // morph-swipeout
-</script>
+    </script>
 
   </body>
 </html>

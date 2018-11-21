@@ -13,9 +13,8 @@
   "main": "morph-swipeout.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@polymer/polymer": "^3.0.0",
-    "@polymer/iron-test-helpers": "^3.0.0-pre.18",
-    "@moduware/morph-element": "^1.0.0"
+    "@polymer/lit-element": "^0.6.2",
+    "@polymer/iron-test-helpers": "^3.0.0-pre.18"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.18",
