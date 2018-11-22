@@ -155,7 +155,7 @@ export class MorphSwipeout extends LitElement {
 
     setTouchAction(this, 'pan-y');
     let self = this;
-    
+
     (async () => {
       const morphButtonRight = await self._getMorphButtonElement('right');
       const morphButtonLeft = await self._getMorphButtonElement('left');
@@ -404,41 +404,13 @@ export class MorphSwipeout extends LitElement {
   }
 
   /**
-  * Computes for the distance for reveal of buttons
-  * @param {Number} normalizedDistance - The value of the travel of event left or right scroll
-  */
-  _computeDistanceToRevealRightButtons(normalizedDistance) {
-    // when swipe in left direction, reveal right buttons
-    if (normalizedDistance < this._rightButtonsContainerSize / 2) {
-      return 0;
-    } else {
-      return this._rightButtonsContainerSize * -1;
-    }
-  }
-
-  /**
-  * Computes for the distance for reveal of left buttons
-  * @param {Number} normalizedDistance - The value of the travel of event left or right scroll
-  */
-  _computeDistanceToRevealLeftButtons(normalizedDistance) {
-    // when swipe in left direction, reveal right buttons
-    if (normalizedDistance < this._leftButtonsContainerSize / 2) {
-      return 0;
-    } else {
-      return this._leftButtonsContainerSize;
-    }
-  }
-
-  /**
   * Gets the background-color of morph-button
   * @param {String} buttonPosition - The position of the button being revealed
   */
   _getElementBackgroundColor(element) {
     if (typeof (ShadyCSS) != 'undefined') {
       return ShadyCSS.getComputedStyleValue(element, 'background-color');
-    } else {
-      return getComputedStyle(element).getPropertyValue('background-color');
-    }
+    } 
   }
 
 

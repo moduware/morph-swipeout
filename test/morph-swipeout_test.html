@@ -15,7 +15,7 @@
     <script type="module" src="../node_modules/@moduware/morph-button/morph-button.js"></script>
     <script type="module" src="../morph-swipeout.js"></script>
   </head>
-  
+
   <body>
 
     <test-fixture id="BasicIosTestFixture">
@@ -165,6 +165,89 @@
       import { addListener } from '@polymer/polymer/lib/utils/gestures.js';
       
       describe('morph-swipeout', () => {
+
+        describe('_closeSwipe()', () => {
+          let iosElement;
+
+          beforeEach(function () {
+            iosElement = fixture('BasicIosTestFixture');
+          });
+
+          it('Should return transform value "translateX(0px)"', async () => {
+            await iosElement.updateComplete;
+
+            const shadow = iosElement.shadowRoot;
+            const rootContainer = shadow.querySelector('#rootContainer');
+            let styles = window.getComputedStyle(rootContainer);
+            // call _closeSwipe
+            iosElement._closeSwipe();
+            await iosElement.updateComplete;
+            // check if it changed to correct transform value
+            expect(rootContainer.style.transform).to.be.equal('translateX(0px)');
+          });
+        });
+
+        //_calculateSwipeSlowDown
+
+        describe('_calculateSwipeSlowDown()', () => {
+          let iosElement;
+
+          beforeEach(function () {
+            iosElement = fixture('BasicIosTestFixture');
+          });
+
+          it('should return expected result when pass in 1 distance and 1 offset', async () => {
+            await iosElement.updateComplete;
+            const expected = 0.5;
+            const result = iosElement._calculateSwipeSlowDown(1, 1);
+            expect(result).to.be.equal(expected);
+          });
+
+          it('should return expected result when pass in 100 distance and 100 offset', async () => {
+            await iosElement.updateComplete;
+            const expected = 50;
+            const result = iosElement._calculateSwipeSlowDown(100, 100);
+            expect(result).to.be.equal(expected);
+          });
+
+          it('should accept an optional 3rd parameter and return expected result', async () => {
+            await iosElement.updateComplete;
+            const expected = 75;
+            const result = iosElement._calculateSwipeSlowDown(100, 100, 4);
+            expect(result).to.be.equal(expected);
+          });
+        });
+
+        // _confirmDialog
+        describe('_calculateSwipeSlowDown()', () => {
+          let iosElement;
+
+          beforeEach(function () {
+            iosElement = fixture('BasicIosTestFixture');
+          });
+          
+          it('should return true if window.confirm returns true', async () => {
+            await iosElement.updateComplete;
+            const confirmTrue = sinon.stub(window, "confirm", () => {return true});
+            const confirmResult = await iosElement._confirmDialog('hello');
+            
+            expect(confirmResult).to.be.true;
+
+            // restores the stub method window.confirm
+            confirmTrue.restore();
+          });
+          
+          it('should return false if window.confirm returns false', async () => {
+            await iosElement.updateComplete;
+            const confirmTrue = sinon.stub(window, "confirm", () => { return false });
+            const confirmResult = await iosElement._confirmDialog('hello');
+            
+            expect(confirmResult).to.be.false;
+
+            // restores the stub method window.confirm
+            confirmTrue.restore();
+          });
+        });
 
         describe('_getMorphButtonElement()', () => {
           let iosElement;
@@ -371,7 +454,7 @@
             beforeEach(() => {
 
               stub('morph-swipeout', {
-                _completeOverswipe: function () {
+                _completeOverswipe: function (left) {
                   console.log('_completeOverswipe called!');
                 }
               });
