@@ -283,6 +283,41 @@
           });
         });
 
+        // this._getTransformTranslateX(rootContainer);
+        describe('_getTransformTranslateX(rootContainer)', () => {
+          let element;
+
+          beforeEach(function () {
+            element = fixture('BasicIosTestFixture');
+          });
+
+          it('Should return the POSITIVE integer in the translateX POSITIVE value', async () => {
+            await element.updateComplete;
+
+            const fakeRootContainer = document.createElement('div');
+            fakeRootContainer.setAttribute('id', 'rootContainer');
+            fakeRootContainer.style.transform = "translateX(900px)";
+            
+            const result = element._getTransformTranslateX(fakeRootContainer);
+            const expected = 900;
+
+            expect(result).to.be.equal(expected);
+          });
+
+          it('Should return the NEGATIVE integer in the translateX NEGATIVE value', async () => {
+            await element.updateComplete;
+
+            const fakeRootContainer = document.createElement('div');
+            fakeRootContainer.setAttribute('id', 'rootContainer');
+            fakeRootContainer.style.transform = "translateX(-900px)";
+            
+            const result = element._getTransformTranslateX(fakeRootContainer)
+            const expected = -900;
+
+            expect(result).to.be.equal(expected);
+          });
+        });
+
         describe('_getMorphButtonElement()', () => {
           let iosElement;
 
