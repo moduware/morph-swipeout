@@ -158,6 +158,20 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="NoPromptTextAndButtonNOItemDelete">
+      <template>
+        <morph-swipeout platform="android" overswiper>
+          <span slot="left-buttons">
+            <morph-button platform="android" color="green" filled big flat>Action</morph-button>
+          </span>
+          Swipeout content
+          <span slot="right-buttons">
+            <morph-button class="swiper-integration-class" platform="android" color="red" filled flat>Action</morph-button>
+          </span>
+        </morph-swipeout>
+      </template>
+    </test-fixture>
+
     <script type="module">
 
       import '../morph-swipeout.js';
@@ -315,6 +329,31 @@
             const expected = -900;
 
             expect(result).to.be.equal(expected);
+          });
+        });
+
+        // _handleOverswipe
+        // this._animateDeleteAction(button);
+        describe.only('_handleOverswipe(direction)', () => {
+          let element;
+
+          beforeEach(function () {
+            element = fixture('NoPromptTextAndButtonNOItemDelete');
+          });
+
+          it('Should NOT call _animateDeleteAction() when there is no swipeoutprompttext or swipedelete', async () => {
+            
+              const confirmTrue = sinon.stub(window, "confirm", () => { return true });    
+              const animateDelete = sinon.stub(element, "_animateDeleteAction", () => {
+                console.log('Animate!');
+              });
+
+              await element._handleOverswipe('left');
+
+              expect(animateDelete).not.to.be.called;
+
+              confirmTrue.restore();
+
           });
         });
 
