@@ -1,8 +1,8 @@
 import { LitElement, html } from '@polymer/lit-element';
 import '@polymer/polymer/lib/utils/render-status.js';
-import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { addListener, setTouchAction, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
+// import { GestureEventListeners } from '@polymer/polymer/lib/mixins/gesture-event-listeners.js';
 
 /**
  * `morph-swipeout`
@@ -109,7 +109,7 @@ export class MorphSwipeout extends LitElement {
         </div>
       </div>
     </div>
-`;
+    `;
   }
 
   static get is() { return 'morph-swipeout'; }
