@@ -1,4 +1,4 @@
-import { LitElement, html } from 'lit-element';
+import { LitElement, html, css } from 'lit-element';
 import '@polymer/polymer/lib/utils/render-status.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { addListener, setTouchAction, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
@@ -13,88 +13,92 @@ import { addListener, setTouchAction, removeListener } from '@polymer/polymer/li
  * @demo demo/index.html
  */
 export class MorphSwipeout extends LitElement {
+  static get styles() {
+    return [
+      css`
+        :host {
+          --swipe-action-after-background-color-right: yellow;
+          --swipe-action-after-background-color-left: yellow;
+      
+          position: relative;
+          display: block;
+          overflow-x: hidden;
+          background-color: var(--back-container-background-color, #fff);
+        }
+      
+        .root-container {
+          display: flex;
+          justify-content: stretch;
+        }
+      
+        .root-container:not(.no-transition) {
+          transition: transform 300ms;
+        }
+      
+        .animation-container {
+          transition: height 0.4s linear;
+          overflow: hidden;
+          width: 100%;
+        }
+      
+        .animation-container.disappear-animation {
+          height: 0 !important;
+        }
+      
+        .left-buttons-container,
+        .right-buttons-container {
+          position: absolute;
+          display: flex;
+          height: 100%;
+          top: 50%;
+        }
+      
+        .left-buttons-container {
+          left: 0;
+          transform: translateY(-50%) translateX(-100%);
+        }
+      
+        .right-buttons-container {
+          right: 0;
+          transform: translateY(-50%) translateX(100%);
+        }
+      
+        :host .left-buttons-container ::slotted([slot="left-buttons"])  morph-button,
+        :host .right-buttons-container ::slotted([slot="right-buttons"])  morph-button {
+          position: relative;
+        }
+      
+        :host .left-buttons-container::after,
+        :host .right-buttons-container::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          height: 100%;
+          width: 600%;
+          
+          z-index: -1;
+          transform: translate3d(0,0,0);
+        }
+      
+        :host .right-buttons-container::after {
+          background-color: var(--swipe-action-after-background-color-right);
+          left: 100%;
+          margin-left: -1px;
+        }
+      
+        :host .left-buttons-container::after {
+          background-color: var(--swipe-action-after-background-color-left, #fff);
+          right: 100%;
+          margin-right: -1px;
+        }
+      
+      `
+    ];
+  }
+
+
   render() {
     return html`
-    <style>
-      :host {
-        --swipe-action-after-background-color-right: yellow;
-        --swipe-action-after-background-color-left: yellow;
-
-        position: relative;
-        display: block;
-        overflow-x: hidden;
-        background-color: var(--back-container-background-color, #fff);
-      }
-
-      .root-container {
-        display: flex;
-        justify-content: stretch;
-      }
-
-      .root-container:not(.no-transition) {
-        transition: transform 300ms;
-      }
-
-      .animation-container {
-        transition: height 0.4s linear;
-        overflow: hidden;
-        width: 100%;
-      }
-
-      .animation-container.disappear-animation {
-        height: 0 !important;
-      }
-
-      .left-buttons-container,
-      .right-buttons-container {
-        position: absolute;
-        display: flex;
-        height: 100%;
-        top: 50%;
-      }
-
-      .left-buttons-container {
-        left: 0;
-        transform: translateY(-50%) translateX(-100%);
-      }
-
-      .right-buttons-container {
-        right: 0;
-        transform: translateY(-50%) translateX(100%);
-      }
-
-      :host .left-buttons-container ::slotted([slot="left-buttons"])  morph-button,
-      :host .right-buttons-container ::slotted([slot="right-buttons"])  morph-button {
-        position: relative;
-      }
-
-      :host .left-buttons-container::after,
-      :host .right-buttons-container::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        height: 100%;
-        width: 600%;
-        
-        z-index: -1;
-        transform: translate3d(0,0,0);
-      }
-
-      :host .right-buttons-container::after {
-        background-color: var(--swipe-action-after-background-color-right);
-        left: 100%;
-        margin-left: -1px;
-      }
-
-      :host .left-buttons-container::after {
-        background-color: var(--swipe-action-after-background-color-left, #fff);
-        right: 100%;
-        margin-right: -1px;
-      }
-
-
-    </style>
-
     <div class="animation-container" id="animationContainer">
       <div class="root-container" id="rootContainer">
         <div class="left-buttons-container" id="leftButtonsContainer">
