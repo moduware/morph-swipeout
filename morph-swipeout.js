@@ -1,4 +1,4 @@
-import { LitElement, html } from '@polymer/lit-element';
+import { LitElement, html } from 'lit-element';
 import '@polymer/polymer/lib/utils/render-status.js';
 import { FlattenedNodesObserver } from '@polymer/polymer/lib/utils/flattened-nodes-observer.js';
 import { addListener, setTouchAction, removeListener } from '@polymer/polymer/lib/utils/gestures.js';
@@ -276,8 +276,6 @@ export class MorphSwipeout extends LitElement {
   * @param {Object} event - The value of the travel of event left or right scroll
   */
   async handleTrack(event) {
-    console.log('handelTrack called!');
-    
     const shadow = this.shadowRoot;
     let rootContainer = shadow.querySelector('#rootContainer');
     let distance = event.detail.dx;

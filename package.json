@@ -13,16 +13,16 @@
   "main": "morph-swipeout.js",
   "license": "Apache-2.0",
   "dependencies": {
-    "@polymer/lit-element": "^0.6.2",
+    "lit-element": "^2.0.1",
     "@polymer/iron-test-helpers": "^3.0.0-pre.18"
   },
   "devDependencies": {
     "@polymer/iron-demo-helpers": "^3.0.0-pre.18",
     "wct-browser-legacy": "^1.0.1",
     "@webcomponents/webcomponentsjs": "^2.0.0",
-    "@moduware/morph-button": "^1.0.0",
-    "@moduware/morph-list-view": "^1.0.0",
-    "@moduware/morph-list-view-item": "^1.0.0",
+    "@moduware/morph-button": "^2.0.0",
+    "@moduware/morph-list-view": "^2.0.0",
+    "@moduware/morph-list-view-item": "^2.0.0",
     "@moduware/morph-shared-colors": "^1.0.0",
     "wct-istanbub": "^0.2.7"
   }
