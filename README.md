@@ -6,7 +6,7 @@ Component to allow swipeout of content by use that will reveal additional action
 
 ## Getting Started
 
-For the information about how to clone the desired repository, running the local server and testing, please refer to Polymorph elements getting started docs at the end of this repository.
+For the information about how to clone the desired repository, running the local server and testing, please refer to Polymorph elements getting started docs at the end of this repository. This is now using LitElement 2.0.1 as base class. 
 
 ## Demo
 
