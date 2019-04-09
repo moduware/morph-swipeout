@@ -203,6 +203,7 @@ export class MorphSwipeout extends LitElement {
   * Async function callback of click event listener on right most button
   */
   async _onRightButtonClick(event) {
+    event.stopPropagation()
     const button = event.target;
     if (button.hasAttribute('item-delete')) {
       await this._animateDeleteAction(button);
@@ -213,6 +214,7 @@ export class MorphSwipeout extends LitElement {
   * Async function callback of click event listener on left most button
   */
   async _onLeftButtonClick(event) {
+    event.stopPropagation();
     const button = event.target;
     if (button.hasAttribute('item-delete')) {
       await this._animateDeleteAction(button);
