@@ -409,7 +409,9 @@ export class MorphSwipeout extends LitElement {
   _getElementBackgroundColor(element) {
     if (typeof (ShadyCSS) != 'undefined') {
       return ShadyCSS.getComputedStyleValue(element, 'background-color');
-    } 
+    } else {
+      return getComputedStyle(element).getPropertyValue('background-color');
+    }
   }
 
 
