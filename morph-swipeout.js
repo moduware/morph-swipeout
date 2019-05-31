@@ -181,7 +181,7 @@ export class MorphSwipeout extends LitElement {
   * @param {Object} morphButtonLeft - The left morph-button
   */
   _addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft) {
-    window.addEventListener('click', function _tapListener(e) {
+    window.addEventListener('touchstart', function _tapListener(e) {
       let target = e.target;
       // if the click is outside the button then close the swipeout component
       if (target != self && target != morphButtonRight && target != morphButtonLeft) {
