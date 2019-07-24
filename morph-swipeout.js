@@ -168,8 +168,8 @@ export class MorphSwipeout extends LitElement {
       // this.$.animationContainer.style.height = this.clientHeight + 'px';
       // tap event to whole body
       self._addSwipeoutClickOutsideEventListners(self, morphButtonRight, morphButtonLeft);
-      if (morphButtonRight) morphButtonRight.addEventListener('click', event => self._onRightButtonClick(event));
-      if(morphButtonLeft) morphButtonLeft.addEventListener('click', event => self._onLeftButtonClick(event));
+      if (morphButtonRight) morphButtonRight.addEventListener('touchstart', event => self._onRightButtonClick(event));
+      if (morphButtonLeft) morphButtonLeft.addEventListener('touchstart', event => self._onLeftButtonClick(event));
     })();
 
   }
