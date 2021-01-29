@@ -364,7 +364,7 @@ export class MorphSwipeout extends LitElement {
   async _handleOverswipe(direction) {
     const buttonPosition = direction == 'left' ? 'right' : 'left';
     const button = await this._getMorphButtonElement(buttonPosition);
-    const swipeoutPromptText = button.getAttribute('swipeoutprompttext');
+    const swipeoutPromptText = button.getAttribute('swipeout-prompt-text');
     let confirmed = false;
     if (swipeoutPromptText) {
       confirmed = await this._confirmDialog(swipeoutPromptText);
